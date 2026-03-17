@@ -1,0 +1,37 @@
+[
+  {
+    "objectID": "data_cleaning.html",
+    "href": "data_cleaning.html",
+    "title": "Limpieza y Preparación de Datos",
+    "section": "",
+    "text": "En esta sección se documenta el proceso de limpieza, integración y transformación de los datos utilizados para el análisis del Índice de Necesidades Básicas Insatisfechas (NBI).\nEl objetivo es garantizar que los datos estén consistentes, completos y listos para la etapa de visualización.\n\n\n\n\n\n\n\nflowchart LR\n\nA[\"📥 Carga de datos&lt;br&gt;&lt;a href='https://www.censoecuador.gob.ec/data-censo-ecuador/#bddvdos'&gt;Fuente INEC&lt;/a&gt;\"] --&gt; B[\"📦 ZIP → Parquet\"]\nB --&gt; C[\" Unión de bases&lt;br&gt;Población, Hogar, Vivienda\"]\nC --&gt; D[\" Construcción de dimensiones NBI\"]\n\n\nD --&gt; D1[\"💰 Capacidad económica\"]\nD --&gt; D2[\"🎓 Educación\"]\nD --&gt; D3[\"🏠 Vivienda\"]\nD --&gt; D4[\"🚿 Servicios\"]\nD --&gt; D5[\"👨‍👩‍👧 Hacinamiento\"]\n\nD1 --&gt; E[\"🧮 Índice NBI\"]\nD2 --&gt; E\nD3 --&gt; E\nD4 --&gt; E\nD5 --&gt; E\n\nE --&gt; F[\" Base final&lt;br&gt;Nivel persona\"]\n\n\n\n\n\n\n\n\n\n\nPuedes descargar la base oficial del INEC aquí:\n👉 https://www.ecuadorencifras.gob.ec/documentos/web-inec/bd-censo/cantonal/BDD_CPV2022_CANT_CSV.zip\n\n\n\n\nSelecciona una dimensión para ver su explicación:\n\n💰 Capacidad económica🎓 Acceso a educación básica🏠 Acceso a vivienda🚿 Acceso a servicios básicos👨‍👩‍👧 Hacinamiento\n\n\nEl hogar se considera privado en esta dimensión si se cumplen ambas condiciones:\n\nLos años de escolaridad del jefe(a) de hogar son menores o iguales a 2 años\n\nExisten más de tres personas por cada persona ocupada\n\nRefleja limitaciones en capital humano y alta dependencia económica.\n\n\n\nEl hogar se considera privado si:\n\nExisten niños de 6 a 12 años que no asisten a clases\n\nMide exclusión educativa en edades clave.\n\n\n\nPrivación si se cumple al menos una:\n\nPiso de tierra u otros materiales precarios\n\nParedes de caña, estera u otros materiales inadecuados\n\nEvalúa calidad estructural de la vivienda.\n\n\n\nPrivación si:\n\nNo hay servicio higiénico adecuado\n\nEl agua no proviene de fuente segura\n\nRefleja condiciones sanitarias del hogar.\n\n\n\nPrivación si:\n\nHay más de 3 personas por dormitorio\n\nIndica sobreocupación del hogar.\n\n\n\n\n\n\n\nUn hogar se clasifica como pobre por NBI si presenta al menos una de las cinco privaciones.\n\nEste enfoque permite medir la pobreza desde múltiples dimensiones, más allá del ingreso."
+  },
+  {
+    "objectID": "data_cleaning.html#diagrama-del-proceso-nbi",
+    "href": "data_cleaning.html#diagrama-del-proceso-nbi",
+    "title": "Limpieza y Preparación de Datos",
+    "section": "",
+    "text": "flowchart LR\n\nA[\"📥 Carga de datos&lt;br&gt;&lt;a href='https://www.censoecuador.gob.ec/data-censo-ecuador/#bddvdos'&gt;Fuente INEC&lt;/a&gt;\"] --&gt; B[\"📦 ZIP → Parquet\"]\nB --&gt; C[\" Unión de bases&lt;br&gt;Población, Hogar, Vivienda\"]\nC --&gt; D[\" Construcción de dimensiones NBI\"]\n\n\nD --&gt; D1[\"💰 Capacidad económica\"]\nD --&gt; D2[\"🎓 Educación\"]\nD --&gt; D3[\"🏠 Vivienda\"]\nD --&gt; D4[\"🚿 Servicios\"]\nD --&gt; D5[\"👨‍👩‍👧 Hacinamiento\"]\n\nD1 --&gt; E[\"🧮 Índice NBI\"]\nD2 --&gt; E\nD3 --&gt; E\nD4 --&gt; E\nD5 --&gt; E\n\nE --&gt; F[\" Base final&lt;br&gt;Nivel persona\"]"
+  },
+  {
+    "objectID": "data_cleaning.html#fuente-de-datos",
+    "href": "data_cleaning.html#fuente-de-datos",
+    "title": "Limpieza y Preparación de Datos",
+    "section": "",
+    "text": "Puedes descargar la base oficial del INEC aquí:\n👉 https://www.ecuadorencifras.gob.ec/documentos/web-inec/bd-censo/cantonal/BDD_CPV2022_CANT_CSV.zip"
+  },
+  {
+    "objectID": "data_cleaning.html#dimensiones-del-índice-nbi",
+    "href": "data_cleaning.html#dimensiones-del-índice-nbi",
+    "title": "Limpieza y Preparación de Datos",
+    "section": "",
+    "text": "Selecciona una dimensión para ver su explicación:\n\n💰 Capacidad económica🎓 Acceso a educación básica🏠 Acceso a vivienda🚿 Acceso a servicios básicos👨‍👩‍👧 Hacinamiento\n\n\nEl hogar se considera privado en esta dimensión si se cumplen ambas condiciones:\n\nLos años de escolaridad del jefe(a) de hogar son menores o iguales a 2 años\n\nExisten más de tres personas por cada persona ocupada\n\nRefleja limitaciones en capital humano y alta dependencia económica.\n\n\n\nEl hogar se considera privado si:\n\nExisten niños de 6 a 12 años que no asisten a clases\n\nMide exclusión educativa en edades clave.\n\n\n\nPrivación si se cumple al menos una:\n\nPiso de tierra u otros materiales precarios\n\nParedes de caña, estera u otros materiales inadecuados\n\nEvalúa calidad estructural de la vivienda.\n\n\n\nPrivación si:\n\nNo hay servicio higiénico adecuado\n\nEl agua no proviene de fuente segura\n\nRefleja condiciones sanitarias del hogar.\n\n\n\nPrivación si:\n\nHay más de 3 personas por dormitorio\n\nIndica sobreocupación del hogar."
+  },
+  {
+    "objectID": "data_cleaning.html#interpretación-del-nbi",
+    "href": "data_cleaning.html#interpretación-del-nbi",
+    "title": "Limpieza y Preparación de Datos",
+    "section": "",
+    "text": "Un hogar se clasifica como pobre por NBI si presenta al menos una de las cinco privaciones.\n\nEste enfoque permite medir la pobreza desde múltiples dimensiones, más allá del ingreso."
+  }
+]

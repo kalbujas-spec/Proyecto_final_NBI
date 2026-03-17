@@ -1,0 +1,16 @@
+---
+title: "Proyecto Final NBI"
+format: html
+---
+
+# Bienvenida
+
+Este sitio presenta el análisis del **Índice de Necesidades Básicas Insatisfechas (NBI)** utilizando datos censales y técnicas de visualización.
+
+El proyecto está organizado en tres secciones principales:
+
+- **Limpieza de Datos:** preparación, integración y transformación de las bases.
+- **Visualizaciones:** gráficos descriptivos y mapas temáticos.
+- **Conclusiones:** hallazgos clave del análisis.
+
+Puedes navegar entre las secciones usando el menú superior.

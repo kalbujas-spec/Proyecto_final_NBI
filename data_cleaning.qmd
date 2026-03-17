@@ -1,0 +1,110 @@
+---
+title: "Limpieza y Preparación de Datos"
+format: html
+
+---
+
+# Introducción
+
+En esta sección se documenta el proceso de **limpieza, integración y transformación** de los datos utilizados para el análisis del Índice de Necesidades Básicas Insatisfechas (NBI).
+
+El objetivo es garantizar que los datos estén consistentes, completos y listos para la etapa de visualización.
+
+
+
+## 🔄 Diagrama del proceso NBI
+
+```{mermaid}
+flowchart LR
+
+A["📥 Carga de datos<br><a href='https://www.censoecuador.gob.ec/data-censo-ecuador/#bddvdos'>Fuente INEC</a>"] --> B["📦 ZIP → Parquet"]
+B --> C[" Unión de bases<br>Población, Hogar, Vivienda"]
+C --> D[" Construcción de dimensiones NBI"]
+
+
+D --> D1["💰 Capacidad económica"]
+D --> D2["🎓 Educación"]
+D --> D3["🏠 Vivienda"]
+D --> D4["🚿 Servicios"]
+D --> D5["👨‍👩‍👧 Hacinamiento"]
+
+D1 --> E["🧮 Índice NBI"]
+D2 --> E
+D3 --> E
+D4 --> E
+D5 --> E
+
+E --> F[" Base final<br>Nivel persona"]
+```
+
+---
+
+## 📥 Fuente de datos
+
+Puedes descargar la base oficial del INEC aquí:
+
+👉 <https://www.ecuadorencifras.gob.ec/documentos/web-inec/bd-censo/cantonal/BDD_CPV2022_CANT_CSV.zip>
+
+---
+
+## 📌 Dimensiones del Índice NBI
+
+Selecciona una dimensión para ver su explicación:
+
+::: {.panel-tabset}
+
+## 💰 Capacidad económica
+El hogar se considera privado en esta dimensión si se cumplen **ambas condiciones**:
+
+- Los años de escolaridad del jefe(a) de hogar son **menores o iguales a 2 años**  
+- Existen **más de tres personas por cada persona ocupada**
+
+Refleja limitaciones en capital humano y alta dependencia económica.
+
+---
+
+## 🎓 Acceso a educación básica
+El hogar se considera privado si:
+
+- Existen niños de **6 a 12 años que no asisten a clases**
+
+Mide exclusión educativa en edades clave.
+
+---
+
+## 🏠 Acceso a vivienda
+Privación si se cumple al menos una:
+
+- Piso de **tierra u otros materiales precarios**  
+- Paredes de **caña, estera u otros materiales inadecuados**
+
+Evalúa calidad estructural de la vivienda.
+
+---
+
+## 🚿 Acceso a servicios básicos
+Privación si:
+
+- No hay servicio higiénico adecuado  
+- El agua **no proviene de fuente segura**
+
+Refleja condiciones sanitarias del hogar.
+
+---
+
+## 👨‍👩‍👧 Hacinamiento
+Privación si:
+
+- Hay **más de 3 personas por dormitorio**
+
+Indica sobreocupación del hogar.
+
+:::
+
+---
+
+## 📊 Interpretación del NBI
+
+Un hogar se clasifica como **pobre por NBI** si presenta **al menos una** de las cinco privaciones.
+
+> Este enfoque permite medir la pobreza desde múltiples dimensiones, más allá del ingreso.
