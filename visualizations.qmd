@@ -1,0 +1,198 @@
+---
+title: "Análisis de NBI con Altair"
+format:
+  html:
+    toc: true
+    theme: cosmo
+---
+
+## Resumen ejecutivo
+
+- El NBI alcanza al **39.63% de las personas** y al **37.10% de los hogares**.
+- La brecha territorial domina el análisis: en hogares, el NBI es de **60.68% en área rural**, frente a **23.60% en área urbana**.
+- La provincia con mayor incidencia es **Orellana (63.45%)**, y la de menor incidencia es **Pichincha (13.86%)**.
+- En volumen absoluto, **Guayas** concentra la mayor cantidad de hogares con NBI (**467,718**), seguida por **Manabí** (**287,836**).
+- Entre los hogares con NBI, la privación más extendida es el **acceso a servicios básicos**, presente en **79.26%** de esos hogares.
+- El **69.48%** de los hogares con NBI presenta una sola carencia y el **30.52%** acumula dos o más.
+
+## Cobertura general
+
+| Nivel | Universo | Con NBI | Tasa NBI (%) |
+|---|---:|---:|---:|
+| Personas | 16,938,986 | 6,713,750 | 39.63% |
+| Hogares (P01 == 1) | 5,188,827 | 1,925,141 | 37.10% |
+
+<iframe src="report_assets/brecha_urbano_rural.html" width="100%" height="470" style="border:none;"></iframe>
+
+La diferencia entre área urbana y rural es el patrón más robusto del archivo. El promedio nacional es útil como contexto, pero, por sí solo, esconde una fractura espacial muy marcada.
+
+## Desigualdad territorial
+
+<iframe src="report_assets/incidencia_provincia.html" width="100%" height="720" style="border:none;"></iframe>
+
+<iframe src="report_assets/incidencia_vs_volumen.html" width="100%" height="560" style="border:none;"></iframe>
+
+Hay dos lecturas complementarias. La primera es la **incidencia**, donde sobresalen Orellana, Esmeraldas, Manabí y Los Ríos. La segunda es la **masa de hogares afectados**, donde Guayas y Manabí pesan más por su tamaño poblacional.
+
+### Provincias con mayor incidencia
+
+| Provincia | Hogares | Hogares con NBI | Tasa hogares NBI (%) | Participación del total NBI (%) |
+|---|---:|---:|---:|---:|
+| Orellana | 50,843 | 32,259 | 63.45% | 1.68% |
+| Esmeraldas | 166,694 | 101,320 | 60.78% | 5.26% |
+| Manabí | 484,455 | 287,836 | 59.41% | 14.95% |
+| Los Ríos | 282,171 | 167,086 | 59.21% | 8.68% |
+| Morona Santiago | 52,453 | 30,558 | 58.26% | 1.59% |
+| Bolívar | 63,428 | 36,179 | 57.04% | 1.88% |
+| Sucumbíos | 59,083 | 32,695 | 55.34% | 1.70% |
+| Napo | 35,615 | 19,589 | 55.00% | 1.02% |
+
+### Provincias con más hogares afectados
+
+| Provincia | Hogares con NBI | Participación del total NBI (%) | Tasa hogares NBI (%) |
+|---|---:|---:|---:|
+| Guayas | 467,718 | 24.30% | 35.46% |
+| Manabí | 287,836 | 14.95% | 59.41% |
+| Los Ríos | 167,086 | 8.68% | 59.21% |
+| Pichincha | 137,877 | 7.16% | 13.86% |
+| Esmeraldas | 101,320 | 5.26% | 60.78% |
+
+## Cuatro lecturas nuevas del NBI
+
+### 1. Mapa provincial del NBI
+
+<iframe src="report_assets/mapa_nbi_provincia.html" width="100%" height="760" style="border:none;"></iframe>
+
+El mapa vuelve mucho más evidente la geografía del NBI. La mayor intensidad se concentra en la Amazonía y en parte de la Costa, mientras que la Sierra centro-norte y, sobre todo, **Pichincha**, aparecen con menores niveles relativos. La utilidad de este gráfico es territorial: muestra que el NBI no está distribuido de forma homogénea y que la política pública debe pensar en corredores de rezago, no solo en provincias aisladas.
+
+### 2. Dumbbell urbano-rural por provincia
+
+<iframe src="report_assets/dumbbell_urbano_rural.html" width="100%" height="700" style="border:none;"></iframe>
+
+Este gráfico mejora la lectura de la brecha territorial porque deja ver, simultáneamente, el nivel urbano, el nivel rural y la distancia entre ambos. La conclusión fuerte es que casi todas las provincias tienen un salto importante entre sus dos espacios, pero la magnitud de esa brecha cambia mucho. **Chimborazo, Morona Santiago, Bolívar, Napo y Loja** muestran contrastes especialmente severos, lo que sugiere una desigualdad interna muy marcada dentro de una misma provincia.
+
+### 3. Desviación provincial respecto al promedio nacional
+
+<iframe src="report_assets/heatmap_desviacion_componentes.html" width="100%" height="760" style="border:none;"></iframe>
+
+Este heatmap no muestra el valor bruto de cada componente, sino cuánto se aleja cada provincia del promedio nacional. Eso permite encontrar perfiles realmente atípicos:
+
+- **Santa Elena** sobresale muy por encima del promedio en **acceso a vivienda** y **hacinamiento**.
+- **Loja** y **Chimborazo** también destacan por un peso inusualmente alto de **acceso a vivienda**.
+- **Orellana, Bolívar, Morona Santiago, Napo y Pastaza** se despegan del promedio por la enorme centralidad del **acceso a servicios básicos**.
+- En cambio, **Pichincha** queda muy por debajo del promedio en **acceso a servicios básicos**, lo que confirma que su perfil de NBI es distinto al de las provincias con mayor rezago estructural.
+
+### 4. Severidad del NBI por área
+
+<iframe src="report_assets/severidad_area.html" width="100%" height="500" style="border:none;"></iframe>
+
+La severidad cambia entre área urbana y rural. En urbano, el **75.20%** de los hogares con NBI tiene una sola carencia; en rural, esa proporción baja a **65.59%**. En sentido contrario, la acumulación de **dos o más carencias** sube de **24.80%** en urbano a **34.41%** en rural. Esto importa porque no toda incidencia tiene la misma profundidad: la ruralidad no solo tiene más NBI, sino también un NBI más complejo y acumulado.
+
+## NBI y territorio
+
+<iframe src="report_assets/componentes_por_area.html" width="100%" height="500" style="border:none;"></iframe>
+
+<iframe src="report_assets/brecha_rural_urbana_provincia.html" width="100%" height="700" style="border:none;"></iframe>
+
+El perfil del NBI cambia bastante entre zonas urbanas y rurales:
+
+- En área **rural**, la carencia de **acceso a servicios básicos** aparece en **91.42%** de los hogares con NBI.
+- En área **urbana**, aunque los servicios básicos siguen liderando, gana mucho más peso relativo el **hacinamiento** (**34.47%**) y el rezago en **acceso a educación básica** (**6.89%**).
+- La **brecha rural-urbana** no es uniforme. Provincias como **Chimborazo, Morona Santiago, Bolívar, Napo y Loja** muestran diferencias especialmente grandes entre sus zonas rurales y urbanas.
+
+## Qué carencias pesan más según provincia
+
+<iframe src="report_assets/heatmap_componentes_provincia.html" width="100%" height="760" style="border:none;"></iframe>
+
+<iframe src="report_assets/componentes_top_provincias.html" width="100%" height="460" style="border:none;"></iframe>
+
+La mezcla provincial del NBI no es idéntica:
+
+- **Acceso a servicios básicos** domina en todas las provincias, pero es particularmente extremo en **Orellana (92.90%)**, **Bolívar (92.84%)** y **Morona Santiago (92.79%)** dentro de los hogares con NBI.
+- **Hacinamiento** pesa mucho más en **Santa Elena (39.84%)** y **Guayas (34.37%)** que en la mayoría del país.
+- El componente de **acceso a vivienda** destaca en **Santa Elena (39.49%)**, **Loja (35.68%)** y **Chimborazo (31.17%)**.
+- La **capacidad económica** gana más peso relativo en **Imbabura (19.37%)** y **Cañar (18.74%)**.
+- La carencia de **acceso a educación básica** es baja en términos generales, pero resalta más en **Pichincha (8.97%)** y **Guayas (6.50%)** que en el resto.
+
+## Perfil de carencias
+
+<iframe src="report_assets/componentes_frecuencia.html" width="100%" height="420" style="border:none;"></iframe>
+
+<iframe src="report_assets/acumulacion_carencias.html" width="100%" height="460" style="border:none;"></iframe>
+
+El perfil de carencias no está repartido de manera uniforme. **Acceso a servicios básicos** domina claramente y una fracción importante de hogares acumula varias privaciones al mismo tiempo, lo que sugiere vulnerabilidad estructural y no solo casos aislados.
+
+| Componente | Hogares afectados | Participación en hogares con NBI (%) |
+|---|---:|---:|
+| Acceso a servicios básicos | 1,525,905 | 79.26% |
+| Hacinamiento | 458,483 | 23.82% |
+| Acceso a vivienda | 378,384 | 19.65% |
+| Capacidad económica | 210,044 | 10.91% |
+| Acceso a educación básica | 76,816 | 3.99% |
+
+| Número de componentes activos | Hogares | Participación dentro de hogares con NBI (%) |
+|---|---:|---:|
+| 1 | 1,337,508 | 69.48% |
+| 2 | 462,393 | 24.02% |
+| 3 | 114,137 | 5.93% |
+| 4 | 10,588 | 0.55% |
+| 5 | 515 | 0.03% |
+
+## Conclusiones
+
+1. El NBI sigue siendo un fenómeno de gran escala: casi **4 de cada 10 personas** y **más de un tercio de los hogares** aparecen con al menos una necesidad básica insatisfecha.
+2. La brecha **urbano-rural** es la conclusión más fuerte del archivo. La ruralidad concentra una incidencia de NBI muy superior a la urbana y explica buena parte del nivel nacional.
+3. El mapa del NBI es muy desigual. **Orellana, Esmeraldas, Manabí, Los Ríos y Morona Santiago** aparecen entre las provincias con mayor incidencia, mientras **Pichincha** queda muy por debajo del promedio.
+4. La priorización cambia si se mira **incidencia** o **cantidad de hogares**. Provincias pequeñas lideran en tasa, pero **Guayas** y **Manabí** pesan más cuando la pregunta es dónde hay más hogares afectados.
+5. El componente más frecuente es **acceso a servicios básicos**, lo que ubica el rezago sanitario y de acceso al agua entre los ejes más críticos de la pobreza estructural capturada por el NBI.
+6. La ruralidad y la composición de carencias van juntas: donde el NBI es más alto, casi siempre se vuelve más dominante la falta de **acceso a servicios básicos** y, en varios casos, también el rezago en **acceso a vivienda**.
+7. Aunque la mayoría de hogares con NBI tiene una sola carencia, **30.52%** acumula dos o más. Ese grupo merece atención especial porque combina rezagos y, probablemente, enfrenta barreras más persistentes.
+
+## Lectura para política pública
+
+### 1. Acceso a servicios básicos
+
+Es el núcleo más duro del NBI. Su peso es abrumador en el área rural y domina especialmente en provincias como **Orellana, Bolívar, Morona Santiago, Napo y Pastaza**. La implicación es directa: si la política pública quiere mover rápido el NBI en los territorios más rezagados, la prioridad debe estar en agua segura, saneamiento y conexiones básicas.
+
+### 2. Acceso a vivienda
+
+Este componente gana relevancia en provincias donde la precariedad habitacional es más visible, como **Santa Elena, Loja, Chimborazo y Manabí**. Aquí no basta con ampliar cobertura de servicios; también hay un problema de calidad material de la vivienda. Eso apunta a programas de mejoramiento habitacional y reducción del déficit cualitativo.
+
+### 3. Hacinamiento
+
+El hacinamiento pesa más en territorios urbanos y costeros, sobre todo en **Santa Elena** y **Guayas**. Eso sugiere que parte del NBI urbano no se explica tanto por ausencia de servicios, sino por presión demográfica sobre la vivienda. La respuesta de política debería combinar vivienda social, mejoramiento de barrios y ampliación de espacio habitable.
+
+### 4. Capacidad económica
+
+Aunque su peso agregado es menor que el de servicios básicos, este componente resalta en **Imbabura, Cañar, Azuay y Bolívar**. Eso sugiere hogares donde la estructura económica y la dependencia interna limitan la capacidad de sostener bienestar. Aquí importan más las políticas de ingreso, empleo y fortalecimiento productivo que las soluciones puramente de infraestructura.
+
+### 5. Acceso a educación básica
+
+Es el componente menos frecuente en el agregado, pero no debe minimizarse. Su mayor peso relativo en **Pichincha, Guayas y Santo Domingo de los Tsáchilas** sugiere que, incluso en territorios con menor NBI total, persisten bolsones de exclusión educativa. La implicación es focalizar seguimiento escolar, permanencia y reinserción educativa, sobre todo en contextos urbanos.
+
+### 6. Priorización territorial
+
+El informe sugiere una estrategia de doble entrada:
+
+- **Intervención intensiva por incidencia** en provincias como **Orellana, Esmeraldas, Manabí, Los Ríos y Morona Santiago**, donde el NBI está más extendido.
+- **Intervención de escala por volumen** en **Guayas, Manabí, Los Ríos y Pichincha**, donde se concentra una gran masa de hogares afectados.
+
+### 7. Hogares con múltiples carencias
+
+El **30.52%** de los hogares con NBI acumula dos o más privaciones. Ese grupo no debería tratarse con una sola política sectorial, porque combina problemas de infraestructura, vivienda, educación y estructura económica. Es el segmento donde más sentido tiene una intervención integral y territorializada.
+
+## Nota metodológica
+
+Los gráficos en Altair fueron exportados como HTML y se incluyen desde `report_assets/`. A nivel de hogar se usa `P01 == 1` como aproximación operativa a la jefatura del hogar. El diccionario en Excel identifica la variable `NBI`, pero no detalla `comp1` a `comp5`; por eso esos componentes se nombran siguiendo el orden metodológico del documento oficial de INEC sobre NBI para el Censo 2022:
+
+1. `comp1`: Capacidad económica
+2. `comp2`: Acceso a educación básica
+3. `comp3`: Acceso a vivienda
+4. `comp4`: Acceso a servicios básicos
+5. `comp5`: Hacinamiento
+
+Fuentes metodológicas:
+
+- Diccionario de variables: `c:\Users\sebas\Downloads\DICCIONARIO_BDD_CANTON (1).xlsx`
+- INEC, *Pobreza por Necesidades Básicas Insatisfechas (NBI): Una mirada desde el Censo 2022*: <https://www.ecuadorencifras.gob.ec/documentos/web-inec/Censo2022/Documento_NBI_24.09.25.pdf>
+- Geometría provincial para el mapa: <https://raw.githubusercontent.com/Handerica/COVID-19_Ecuador/master/provs-ec.json>

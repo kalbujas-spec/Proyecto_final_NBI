@@ -1,7 +1,9 @@
 ---
-title: "Limpieza y Preparación de Datos"
-format: html
-
+title: "Preparación y Limpieza de Datos"
+format:
+  html:
+    toc: true
+    theme: cosmo
 ---
 
 # Introducción
@@ -10,92 +12,112 @@ En esta sección se documenta el proceso de **limpieza, integración y transform
 
 El objetivo es garantizar que los datos estén consistentes, completos y listos para la etapa de visualización.
 
+---
 
-
-## 🔄 Diagrama del proceso NBI
+## Diagrama del proceso del dataset+
 
 ```{mermaid}
+%%{init: {
+  'themeVariables': { 
+    'fontSize': '30px'
+  },
+  'flowchart': {
+    'nodeSpacing': 70,
+    'rankSpacing': 90,
+    'curve': 'basis'
+  }
+}}%%
 flowchart LR
 
-A["📥 Carga de datos<br><a href='https://www.censoecuador.gob.ec/data-censo-ecuador/#bddvdos'>Fuente INEC</a>"] --> B["📦 ZIP → Parquet"]
-B --> C[" Unión de bases<br>Población, Hogar, Vivienda"]
-C --> D[" Construcción de dimensiones NBI"]
+classDef etapa fill:#f2f2f2,stroke:#888,stroke-width:1.5px,color:#333;
+classDef proceso fill:#e6f0fa,stroke:#4a90e2,stroke-width:1.5px,color:#1a3d6d;
+classDef dim fill:#fff3db,stroke:#e6a23c,stroke-width:1.5px,color:#8a5a00;
+classDef final fill:#e6f9e6,stroke:#67c23a,stroke-width:1.5px,color:#2d6a1f;
 
+A["📥 Carga de datos<br/>Fuente: INEC"]:::etapa
+B["📦 ZIP → Parquet"]:::proceso
+C["🧩 Unión de bases<br/>Población · Hogar · Vivienda"]:::proceso
+D["🛠️ Construcción de dimensiones NBI"]:::proceso
 
-D --> D1["💰 Capacidad económica"]
-D --> D2["🎓 Educación"]
-D --> D3["🏠 Vivienda"]
-D --> D4["🚿 Servicios"]
-D --> D5["👨‍👩‍👧 Hacinamiento"]
+D1["💰 Capacidad económica"]:::dim
+D2["🎓 Educación"]:::dim
+D3["🏠 Vivienda"]:::dim
+D4["🚿 Servicios"]:::dim
+D5["👨‍👩‍👧 Hacinamiento"]:::dim
 
-D1 --> E["🧮 Índice NBI"]
+E["🧮 Índice NBI"]:::proceso
+F["📊 Base final<br/>Nivel persona"]:::final
+
+A --> B --> C --> D
+
+D --> D1
+D --> D2
+D --> D3
+D --> D4
+D --> D5
+
+D1 --> E
 D2 --> E
 D3 --> E
 D4 --> E
 D5 --> E
 
-E --> F[" Base final<br>Nivel persona"]
+E --> F
 ```
+## Fuente de datos
+
+La base de datos utilizada proviene del Censo Nacional de Población y Vivienda 2022 del INEC.
+
+[Descargar base de datos INEC](https://www.ecuadorencifras.gob.ec/documentos/web-inec/bd-censo/cantonal/BDD_CPV2022_CANT_CSV.zip)
 
 ---
 
-## 📥 Fuente de datos
+## Dimensiones del Índice NBI
 
-Puedes descargar la base oficial del INEC aquí:
-
-👉 <https://www.ecuadorencifras.gob.ec/documentos/web-inec/bd-censo/cantonal/BDD_CPV2022_CANT_CSV.zip>
-
----
-
-## 📌 Dimensiones del Índice NBI
-
-Selecciona una dimensión para ver su explicación:
+A continuación, se describen las dimensiones que componen el indicador. Selecciona cada pestaña para ver el detalle:
 
 ::: {.panel-tabset}
 
 ## 💰 Capacidad económica
+
 El hogar se considera privado en esta dimensión si se cumplen **ambas condiciones**:
 
-- Los años de escolaridad del jefe(a) de hogar son **menores o iguales a 2 años**  
-- Existen **más de tres personas por cada persona ocupada**
+- Los años de escolaridad del jefe(a) de hogar son menores o iguales a 2 años  
+- Existen más de tres personas por cada persona ocupada  
 
-Refleja limitaciones en capital humano y alta dependencia económica.
-
----
+Esta dimensión refleja limitaciones en capital humano y alta dependencia económica.
 
 ## 🎓 Acceso a educación básica
+
 El hogar se considera privado si:
 
-- Existen niños de **6 a 12 años que no asisten a clases**
+- Existen niños de 6 a 12 años que no asisten a clases  
 
-Mide exclusión educativa en edades clave.
-
----
+Esta dimensión mide exclusión educativa en edades clave.
 
 ## 🏠 Acceso a vivienda
-Privación si se cumple al menos una:
 
-- Piso de **tierra u otros materiales precarios**  
-- Paredes de **caña, estera u otros materiales inadecuados**
+Se considera privación si se cumple al menos una de las siguientes condiciones:
 
-Evalúa calidad estructural de la vivienda.
+- Piso de tierra u otros materiales precarios  
+- Paredes de caña, estera u otros materiales inadecuados  
 
----
+Evalúa la calidad estructural de la vivienda.
 
 ## 🚿 Acceso a servicios básicos
-Privación si:
 
-- No hay servicio higiénico adecuado  
-- El agua **no proviene de fuente segura**
+Se considera privación si:
+
+- No existe servicio higiénico adecuado  
+- El agua no proviene de una fuente segura  
 
 Refleja condiciones sanitarias del hogar.
 
----
-
 ## 👨‍👩‍👧 Hacinamiento
-Privación si:
 
-- Hay **más de 3 personas por dormitorio**
+Se considera privación si:
+
+- Hay más de 3 personas por dormitorio  
 
 Indica sobreocupación del hogar.
 
@@ -103,8 +125,161 @@ Indica sobreocupación del hogar.
 
 ---
 
-## 📊 Interpretación del NBI
+## Interpretación del NBI
 
-Un hogar se clasifica como **pobre por NBI** si presenta **al menos una** de las cinco privaciones.
+Un hogar se clasifica como **pobre por NBI** si presenta al menos una de las cinco privaciones.
 
-> Este enfoque permite medir la pobreza desde múltiples dimensiones, más allá del ingreso.
+Este enfoque permite medir la pobreza desde múltiples dimensiones, superando las limitaciones de indicadores basados únicamente en ingresos.
+```{python}
+#| label: eda-altair-nbi-final-reorder
+#| echo: true
+#| warning: false
+#| message: false
+
+# =========================================
+#  ANÁLISIS DE NBI CON ALTAIR (ANTES Y DESPUÉS)
+# =========================================
+
+import pandas as pd
+import numpy as np
+import pyarrow as pq
+import altair as alt
+
+# Configuración estética
+pd.set_option("display.max_columns", None)
+pd.set_option("display.float_format", "{:.2f}".format)
+alt.data_transformers.disable_max_rows()
+
+# ================================
+# 1. Cargar datos
+# ================================
+print("===================================")
+print(" 1. CARGA DE DATOS")
+print("===================================")
+df = pd.read_parquet("data/df_final.parquet")
+print(f"Dataset cargado con {df.shape[0]:,} filas y {df.shape[1]} columnas.\n")
+
+# ================================
+# 2. Selección de variables
+# ================================
+print("===================================")
+print(" 2. SELECCIÓN DE VARIABLES")
+print("===================================")
+cols = ["ID_PER", "nbi", "comp1", "comp2", "comp3", "comp4", "comp5", "P01", "I01", "AUR"]
+df = df[cols]
+print(f"Variables seleccionadas: {cols}\n")
+
+# Guardamos lista de componentes para limpieza posterior
+comp_cols = ["comp1", "comp2", "comp3", "comp4", "comp5"]
+
+# ================================
+# 3. Valores perdidos ANTES de limpieza
+# ================================
+print("===================================")
+print(" 3. DATOS FALTANTES ANTES DE LIMPIEZA")
+print("===================================")
+missing_before = df.isnull().sum().to_frame(name="Valores perdidos")
+missing_before["Porcentaje (%)"] = (missing_before["Valores perdidos"] / len(df)) * 100
+display(missing_before)
+
+# Gráfico de missing con Altair
+missing_chart_before = (
+    alt.Chart(missing_before.reset_index())
+    .mark_bar(color="#1f77b4")
+    .encode(
+        x=alt.X("index:N", title="Variable"),
+        y=alt.Y("Porcentaje (%):Q", title="Porcentaje de missing"),
+        tooltip=["index", "Valores perdidos", "Porcentaje (%)"]
+    )
+    .properties(
+        title="Porcentaje de datos faltantes por variable (ANTES de limpieza)",
+        width=600,
+        height=400
+    )
+)
+missing_chart_before.display()
+```
+```{python}
+# ================================
+# 4. Histograma de NBI
+# ================================
+print("===================================")
+print(" 4. HISTOGRAMA DE NBI")
+print("===================================")
+
+hist_nbi = (
+    alt.Chart(df)
+    .mark_bar(color="#ff7f0e")
+    .encode(
+        alt.X("nbi:Q", bin=alt.Bin(maxbins=30), title="NBI"),
+        alt.Y("count()", title="Frecuencia"),
+        tooltip=["count()"]
+    )
+    .properties(
+        title="Distribución de NBI (ANTES de limpieza)",
+        width=600,
+        height=400
+    )
+)
+hist_nbi.display()
+```
+
+```{python}
+comp_cols = ["comp1", "comp2", "comp3", "comp4", "comp5"]
+
+# ================================
+# 5. LIMPIEZA DE DATOS
+# ================================
+print("===================================")
+print(" 5. LIMPIEZA DE DATOS")
+print("===================================")
+
+print("- Rellenando con 0 los valores faltantes de comp1 a comp5")
+df[comp_cols] = df[comp_cols].fillna(0)
+
+print("- Eliminando filas con NBI faltante")
+df = df.dropna(subset=["nbi"])
+
+print(f"Dimensiones después de limpieza: {df.shape[0]:,} filas y {df.shape[1]} columnas\n")
+
+
+# ================================
+# 7. Estadísticas descriptivas
+# ================================
+print("===================================")
+print(" 7. ESTADÍSTICAS DESCRIPTIVAS")
+print("===================================")
+desc = df.describe().T
+display(desc)
+
+
+
+```
+
+## Contexto de los datos
+
+El archivo original contiene **16,938,986 registros** y **94 columnas**.  
+
+Debido a la magnitud de los datos, para garantizar que el informe sea **estable y renderizable**, el análisis se realizó **sobre las variables de interés**.  
+
+### Transformaciones realizadas
+
+Para simplificar el análisis y facilitar la visualización:
+
+- Los datos fueron **resumidos a nivel de provincia**.  
+- Se agregaron métricas por **área rural y urbana**, así como por otras categorías relevantes.  
+- Se consolidaron las variables en tablas **colapsadas** y resúmenes para un análisis más eficiente.
+
+### Tablas resumidas utilizadas 
+
+- `data_summary/metrics.csv`  
+- `data_summary/aur_summary.csv`  
+- `data_summary/prov_summary.csv`  
+- `data_summary/comp_summary.csv`  
+- `data_summary/comp_count_summary.csv`  
+- `data_summary/aur_comp_summary.csv`  
+- `data_summary/prov_comp_summary.csv`  
+- `data_summary/prov_area_summary.csv`  
+- `data_summary/severity_area_summary.csv`  
+- `data_summary/prov_comp_deviation.csv`  
+

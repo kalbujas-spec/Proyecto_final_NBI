@@ -1,16 +1,138 @@
 ---
-title: "Proyecto Final NBI"
-format: html
+title: "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador"
+author:
+  - name: "Katherine Albuja"
+  - name: "Sebastián Garzón"
+format: 
+  html:
+    toc: true
+    number-sections: true
 ---
 
-# Bienvenida
+# Contexto del problema
 
-Este sitio presenta el análisis del **Índice de Necesidades Básicas Insatisfechas (NBI)** utilizando datos censales y técnicas de visualización.
+El presente proyecto analiza la distribución de las **Necesidades Básicas Insatisfechas (NBI)** a nivel provincial en Ecuador, con el objetivo de identificar desigualdades territoriales y comprender qué tipos de carencias predominan en cada territorio.
 
-El proyecto está organizado en tres secciones principales:
+El estudio del NBI es clave para entender las condiciones de vida de la población y apoyar la planificación de políticas públicas, así como la asignación eficiente de recursos sociales.
 
-- **Limpieza de Datos:** preparación, integración y transformación de las bases.
-- **Visualizaciones:** gráficos descriptivos y mapas temáticos.
-- **Conclusiones:** hallazgos clave del análisis.
+***
 
-Puedes navegar entre las secciones usando el menú superior.
+# Motivación del análisis
+
+Las desigualdades sociales no se distribuyen de manera homogénea en el territorio. Por ello, resulta fundamental contar con herramientas que permitan:
+
+- **Detectar** provincias con mayor nivel de vulnerabilidad  
+- **Identificar** qué tipo de necesidades son más críticas  
+- **Explorar** patrones geográficos de pobreza estructural  
+
+Este análisis busca generar evidencia clara que contribuya a una mejor toma de decisiones públicas y a una asignación más eficiente de recursos.
+
+***
+
+# Preguntas de investigación
+
+El proyecto se enfoca en responder las siguientes preguntas:
+
+- ¿Cómo se distribuye el NBI entre las provincias del país?  
+- ¿Qué tipo de NBI predomina en cada provincia?  
+- ¿Existen patrones geográficos claros en estas carencias?  
+
+***
+
+# Dataset utilizado
+
+El dataset proviene del **Censo Nacional de Población y Vivienda del INEC (2022)** y contiene información a nivel de hogares, viviendas y personas censadas.
+
+## Variables principales
+
+- **Provincia**  
+- **Indicadores de NBI por dimensión**:
+  - Capacidad económica  
+  - Acceso a educación básica  
+  - Acceso a vivienda  
+  - Acceso a servicios básicos  
+  - Hacinamiento  
+- **Población total**  
+- **Número de personas con NBI**  
+- **Área Urbana o Rural**
+
+Las variables son principalmente categóricas y numéricas, lo que permite realizar análisis comparativos y agregaciones.
+
+***
+
+# Enfoque analítico
+
+El análisis se estructura en tres componentes:
+
+- **Comparación entre provincias** para identificar niveles relativos de NBI  
+- **Caracterización de la composición del NBI** según tipo de carencia  
+- **Detección de patrones espaciales** mediante mapas y gráficos comparativos  
+
+Este enfoque permite analizar magnitudes, distribuciones y relaciones territoriales de manera sistemática.
+
+***
+
+# Visualizaciones utilizadas
+
+El análisis emplea un conjunto de visualizaciones estáticas que permiten abordar el NBI desde una perspectiva territorial, comparativa y multidimensional. La selección de gráficos responde a la necesidad de representar no solo la magnitud del fenómeno, sino también su composición interna y sus patrones espaciales.
+
+En términos generales, se utilizan cuatro tipos de visualizaciones:
+
+## 1. Visualizaciones espaciales
+
+Incluyen mapas coropléticos y representaciones geográficas.  
+Se utilizan porque permiten:
+
+- Identificar patrones territoriales amplios  
+- Detectar zonas de concentración y rezago  
+- Relacionar el NBI con la distribución espacial de la población  
+
+## 2. Gráficos comparativos entre grupos
+
+Incluyen gráficos dumbbell, barras comparativas y distribuciones urbano–rural.  
+Son útiles para:
+
+- Comparar niveles de NBI entre provincias o áreas  
+- Visualizar brechas internas dentro de una misma unidad territorial  
+- Evaluar la magnitud de las diferencias entre grupos poblacionales  
+
+## 3. Visualizaciones multivariadas
+
+Como heatmaps y matrices de desviaciones.  
+Se emplean porque permiten:
+
+- Analizar simultáneamente varias dimensiones del NBI  
+- Identificar perfiles provinciales atípicos  
+- Detectar patrones que no son evidentes en gráficos unidimensionales  
+
+## 4. Gráficos de composición
+
+Incluyen barras apiladas, distribuciones de componentes y perfiles de carencias.  
+Se utilizan para:
+
+- Mostrar qué componentes explican el NBI en cada territorio  
+- Evaluar la severidad y acumulación de carencias  
+- Diferenciar entre incidencia y complejidad del NBI  
+
+***
+
+En conjunto, estas visualizaciones permiten construir una lectura integral del NBI, combinando análisis territorial, comparativo y estructural antes de profundizar en los resultados específicos.
+
+# Secciones del proyecto
+
+A continuación se presentan las distintas etapas del análisis:
+
+- [Preparación y exploración de datos](data_cleaning.qmd)  
+- [Análisis y visualizaciones](visualizations.qmd)  
+
+***
+
+# Valor del proyecto
+
+Este proyecto permite:
+
+- **Transformar datos complejos en información comprensible**  
+- **Identificar desigualdades territoriales de forma clara**  
+- **Apoyar la toma de decisiones basada en evidencia**  
+
+Con ello, se contribuye a una mejor comprensión de las condiciones de vida en el país y a la formulación de políticas públicas más efectivas.

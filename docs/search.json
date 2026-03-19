@@ -2,36 +2,323 @@
   {
     "objectID": "data_cleaning.html",
     "href": "data_cleaning.html",
-    "title": "Limpieza y Preparación de Datos",
+    "title": "Preparación y Limpieza de Datos",
     "section": "",
-    "text": "En esta sección se documenta el proceso de limpieza, integración y transformación de los datos utilizados para el análisis del Índice de Necesidades Básicas Insatisfechas (NBI).\nEl objetivo es garantizar que los datos estén consistentes, completos y listos para la etapa de visualización.\n\n\n\n\n\n\n\nflowchart LR\n\nA[\"📥 Carga de datos&lt;br&gt;&lt;a href='https://www.censoecuador.gob.ec/data-censo-ecuador/#bddvdos'&gt;Fuente INEC&lt;/a&gt;\"] --&gt; B[\"📦 ZIP → Parquet\"]\nB --&gt; C[\" Unión de bases&lt;br&gt;Población, Hogar, Vivienda\"]\nC --&gt; D[\" Construcción de dimensiones NBI\"]\n\n\nD --&gt; D1[\"💰 Capacidad económica\"]\nD --&gt; D2[\"🎓 Educación\"]\nD --&gt; D3[\"🏠 Vivienda\"]\nD --&gt; D4[\"🚿 Servicios\"]\nD --&gt; D5[\"👨‍👩‍👧 Hacinamiento\"]\n\nD1 --&gt; E[\"🧮 Índice NBI\"]\nD2 --&gt; E\nD3 --&gt; E\nD4 --&gt; E\nD5 --&gt; E\n\nE --&gt; F[\" Base final&lt;br&gt;Nivel persona\"]\n\n\n\n\n\n\n\n\n\n\nPuedes descargar la base oficial del INEC aquí:\n👉 https://www.ecuadorencifras.gob.ec/documentos/web-inec/bd-censo/cantonal/BDD_CPV2022_CANT_CSV.zip\n\n\n\n\nSelecciona una dimensión para ver su explicación:\n\n💰 Capacidad económica🎓 Acceso a educación básica🏠 Acceso a vivienda🚿 Acceso a servicios básicos👨‍👩‍👧 Hacinamiento\n\n\nEl hogar se considera privado en esta dimensión si se cumplen ambas condiciones:\n\nLos años de escolaridad del jefe(a) de hogar son menores o iguales a 2 años\n\nExisten más de tres personas por cada persona ocupada\n\nRefleja limitaciones en capital humano y alta dependencia económica.\n\n\n\nEl hogar se considera privado si:\n\nExisten niños de 6 a 12 años que no asisten a clases\n\nMide exclusión educativa en edades clave.\n\n\n\nPrivación si se cumple al menos una:\n\nPiso de tierra u otros materiales precarios\n\nParedes de caña, estera u otros materiales inadecuados\n\nEvalúa calidad estructural de la vivienda.\n\n\n\nPrivación si:\n\nNo hay servicio higiénico adecuado\n\nEl agua no proviene de fuente segura\n\nRefleja condiciones sanitarias del hogar.\n\n\n\nPrivación si:\n\nHay más de 3 personas por dormitorio\n\nIndica sobreocupación del hogar.\n\n\n\n\n\n\n\nUn hogar se clasifica como pobre por NBI si presenta al menos una de las cinco privaciones.\n\nEste enfoque permite medir la pobreza desde múltiples dimensiones, más allá del ingreso."
+    "text": "En esta sección se documenta el proceso de limpieza, integración y transformación de los datos utilizados para el análisis del Índice de Necesidades Básicas Insatisfechas (NBI).\nEl objetivo es garantizar que los datos estén consistentes, completos y listos para la etapa de visualización.\n\n\n\n\n\n\n\n\n%%{init: {\n  'themeVariables': { \n    'fontSize': '30px'\n  },\n  'flowchart': {\n    'nodeSpacing': 70,\n    'rankSpacing': 90,\n    'curve': 'basis'\n  }\n}}%%\nflowchart LR\n\nclassDef etapa fill:#f2f2f2,stroke:#888,stroke-width:1.5px,color:#333;\nclassDef proceso fill:#e6f0fa,stroke:#4a90e2,stroke-width:1.5px,color:#1a3d6d;\nclassDef dim fill:#fff3db,stroke:#e6a23c,stroke-width:1.5px,color:#8a5a00;\nclassDef final fill:#e6f9e6,stroke:#67c23a,stroke-width:1.5px,color:#2d6a1f;\n\nA[\"📥 Carga de datos&lt;br/&gt;Fuente: INEC\"]:::etapa\nB[\"📦 ZIP → Parquet\"]:::proceso\nC[\"🧩 Unión de bases&lt;br/&gt;Población · Hogar · Vivienda\"]:::proceso\nD[\"🛠️ Construcción de dimensiones NBI\"]:::proceso\n\nD1[\"💰 Capacidad económica\"]:::dim\nD2[\"🎓 Educación\"]:::dim\nD3[\"🏠 Vivienda\"]:::dim\nD4[\"🚿 Servicios\"]:::dim\nD5[\"👨‍👩‍👧 Hacinamiento\"]:::dim\n\nE[\"🧮 Índice NBI\"]:::proceso\nF[\"📊 Base final&lt;br/&gt;Nivel persona\"]:::final\n\nA --&gt; B --&gt; C --&gt; D\n\nD --&gt; D1\nD --&gt; D2\nD --&gt; D3\nD --&gt; D4\nD --&gt; D5\n\nD1 --&gt; E\nD2 --&gt; E\nD3 --&gt; E\nD4 --&gt; E\nD5 --&gt; E\n\nE --&gt; F\n\n\n\n\n\n\n\n\n\nLa base de datos utilizada proviene del Censo Nacional de Población y Vivienda 2022 del INEC.\nDescargar base de datos INEC\n\n\n\n\nA continuación, se describen las dimensiones que componen el indicador. Selecciona cada pestaña para ver el detalle:\n\n💰 Capacidad económica🎓 Acceso a educación básica🏠 Acceso a vivienda🚿 Acceso a servicios básicos👨‍👩‍👧 Hacinamiento\n\n\nEl hogar se considera privado en esta dimensión si se cumplen ambas condiciones:\n\nLos años de escolaridad del jefe(a) de hogar son menores o iguales a 2 años\n\nExisten más de tres personas por cada persona ocupada\n\nEsta dimensión refleja limitaciones en capital humano y alta dependencia económica.\n\n\nEl hogar se considera privado si:\n\nExisten niños de 6 a 12 años que no asisten a clases\n\nEsta dimensión mide exclusión educativa en edades clave.\n\n\nSe considera privación si se cumple al menos una de las siguientes condiciones:\n\nPiso de tierra u otros materiales precarios\n\nParedes de caña, estera u otros materiales inadecuados\n\nEvalúa la calidad estructural de la vivienda.\n\n\nSe considera privación si:\n\nNo existe servicio higiénico adecuado\n\nEl agua no proviene de una fuente segura\n\nRefleja condiciones sanitarias del hogar.\n\n\nSe considera privación si:\n\nHay más de 3 personas por dormitorio\n\nIndica sobreocupación del hogar.\n\n\n\n\n\n\n\nUn hogar se clasifica como pobre por NBI si presenta al menos una de las cinco privaciones.\nEste enfoque permite medir la pobreza desde múltiples dimensiones, superando las limitaciones de indicadores basados únicamente en ingresos.\n\n# =========================================\n#  ANÁLISIS DE NBI CON ALTAIR (ANTES Y DESPUÉS)\n# =========================================\n\nimport pandas as pd\nimport numpy as np\nimport pyarrow as pq\nimport altair as alt\n\n# Configuración estética\npd.set_option(\"display.max_columns\", None)\npd.set_option(\"display.float_format\", \"{:.2f}\".format)\nalt.data_transformers.disable_max_rows()  # Para datasets grandes\n\n# ================================\n# 1. Cargar datos\n# ================================\nprint(\"===================================\")\nprint(\" 1. CARGA DE DATOS\")\nprint(\"===================================\")\ndf = pd.read_parquet(\"data/df_final.parquet\")\nprint(f\"Dataset cargado con {df.shape[0]:,} filas y {df.shape[1]} columnas.\\n\")\n\n# ================================\n# 2. Selección de variables\n# ================================\nprint(\"===================================\")\nprint(\" 2. SELECCIÓN DE VARIABLES\")\nprint(\"===================================\")\ncols = [\"ID_PER\", \"nbi\", \"comp1\", \"comp2\", \"comp3\", \"comp4\", \"comp5\", \"P01\", \"I01\", \"AUR\"]\ndf = df[cols]\nprint(f\"Variables seleccionadas: {cols}\\n\")\n\n# ================================\n# 3. Valores perdidos ANTES de limpieza\n# ================================\nprint(\"===================================\")\nprint(\" 3. DATOS FALTANTES ANTES DE LIMPIEZA\")\nprint(\"===================================\")\nmissing_before = df.isnull().sum().to_frame(name=\"Valores perdidos\")\nmissing_before[\"Porcentaje (%)\"] = (missing_before[\"Valores perdidos\"] / len(df)) * 100\ndisplay(missing_before)\n\n# Gráfico de missing con Altair\nmissing_chart_before = alt.Chart(missing_before.reset_index()).mark_bar(color=\"#1f77b4\").encode(\n    x=alt.X(\"index:N\", title=\"Variable\"),\n    y=alt.Y(\"Porcentaje (%):Q\", title=\"Porcentaje de missing\"),\n    tooltip=[\"index\", \"Valores perdidos\", \"Porcentaje (%)\"]\n).properties(\n    title=\"Porcentaje de datos faltantes por variable (ANTES de limpieza)\",\n    width=600,\n    height=400\n)\nmissing_chart_before.display()\n\n# ================================\n# 4. Histograma de NBI\n# ================================\nprint(\"===================================\")\nprint(\" 4. HISTOGRAMA DE NBI\")\nprint(\"===================================\")\n\nhist_nbi = alt.Chart(df).mark_bar(color=\"#ff7f0e\").encode(\n    alt.X(\"nbi:Q\", bin=alt.Bin(maxbins=30), title=\"NBI\"),\n    alt.Y(\"count()\", title=\"Frecuencia\"),\n    tooltip=[\"count()\"]\n).properties(\n    title=\"Distribución de NBI (ANTES de limpieza)\",\n    width=600,\n    height=400\n)\nhist_nbi.display()\n\n# ================================\n# 5. Boxplots de los componentes\n# ================================\nprint(\"===================================\")\nprint(\" 5. BOXPLOTS DE COMPONENTES\")\nprint(\"===================================\")\ncomp_cols = [\"comp1\", \"comp2\", \"comp3\", \"comp4\", \"comp5\"]\ndf_long = df.melt(id_vars=[\"ID_PER\"], value_vars=comp_cols, var_name=\"Componente\", value_name=\"Valor\")\n\nboxplot_comp = alt.Chart(df_long).mark_boxplot().encode(\n    x=alt.X(\"Componente:N\"),\n    y=alt.Y(\"Valor:Q\"),\n    color=alt.Color(\"Componente:N\", legend=None),\n    tooltip=[\"Componente\", \"Valor\"]\n).properties(\n    title=\"Distribución de los componentes comp1 a comp5 (ANTES de limpieza)\",\n    width=600,\n    height=400\n)\nboxplot_comp.display()\n\n# ================================\n# 6. LIMPIEZA DE DATOS\n# ================================\nprint(\"===================================\")\nprint(\" 6. LIMPIEZA DE DATOS\")\nprint(\"===================================\")\nprint(\"- Rellenando con 0 los valores faltantes de comp1 a comp5\")\ndf[comp_cols] = df[comp_cols].fillna(0)\nprint(\"- Eliminando filas con NBI faltante\")\ndf = df.dropna(subset=[\"nbi\"])\nprint(f\"Dimensiones después de limpieza: {df.shape[0]:,} filas y {df.shape[1]} columnas\\n\")\n\n# ================================\n# 7. Valores perdidos DESPUÉS de limpieza\n# ================================\nprint(\"===================================\")\nprint(\" 6. DATOS FALTANTES DESPUÉS DE LA LIMPIEZA\")\nprint(\"===================================\")\nmissing_after = df.isnull().sum().to_frame(name=\"Valores perdidos\")\nmissing_after[\"Porcentaje (%)\"] = (missing_after[\"Valores perdidos\"] / len(df)) * 100\ndisplay(missing_after)\n\n\n\n# ================================\n# 8. Estadísticas descriptivas\n# ================================\nprint(\"===================================\")\nprint(\" 7. ESTADÍSTICAS DESCRIPTIVAS\")\nprint(\"===================================\")\ndesc = df.describe().T\ndesc[\"median\"] = df.median(numeric_only=True)\ndesc = desc[[\"count\", \"mean\", \"median\", \"std\", \"min\", \"25%\", \"50%\", \"75%\", \"max\"]]\ndisplay(desc)\n\n===================================\n 1. CARGA DE DATOS\n===================================\nDataset cargado con 16,938,986 filas y 94 columnas.\n\n===================================\n 2. SELECCIÓN DE VARIABLES\n===================================\nVariables seleccionadas: ['ID_PER', 'nbi', 'comp1', 'comp2', 'comp3', 'comp4', 'comp5', 'P01', 'I01', 'AUR']\n\n===================================\n 3. DATOS FALTANTES ANTES DE LIMPIEZA\n===================================\n\n\n\n\n\n\n\n\n\nValores perdidos\nPorcentaje (%)\n\n\n\n\nID_PER\n0\n0.00\n\n\nnbi\n54588\n0.32\n\n\ncomp1\n54588\n0.32\n\n\ncomp2\n9620291\n56.79\n\n\ncomp3\n54588\n0.32\n\n\ncomp4\n54588\n0.32\n\n\ncomp5\n54588\n0.32\n\n\nP01\n0\n0.00\n\n\nI01\n0\n0.00\n\n\nAUR\n0\n0.00\n\n\n\n\n\n\n\n\n\n\n\n\n\n===================================\n 4. HISTOGRAMA DE NBI\n===================================\n\n\n\n\n\nEl archivo resultante contiene 16,938,986 registros y 94 columnas.\nDebido a la magnitud de los datos, para garantizar que el informe sea estable y renderizable, el análisis se realizó sobre las variables de interés.\n\n\nPara simplificar el análisis y facilitar la visualización:\n\nLos datos fueron resumidos a nivel de provincia.\n\nSe agregaron métricas por área rural y urbana, así como por otras categorías relevantes.\n\nSe consolidaron las variables en tablas colapsadas y resúmenes para un análisis más eficiente.\n\n\n\n\n\ndata_summary/metrics.csv\n\ndata_summary/aur_summary.csv\n\ndata_summary/prov_summary.csv\n\ndata_summary/comp_summary.csv\n\ndata_summary/comp_count_summary.csv\n\ndata_summary/aur_comp_summary.csv\n\ndata_summary/prov_comp_summary.csv\n\ndata_summary/prov_area_summary.csv\n\ndata_summary/severity_area_summary.csv\n\ndata_summary/prov_comp_deviation.csv\n\n\n\n\nEn la siguiente sección se presentará el análisis exploratorio de los datos, incluyendo:\n\nDistribución de las variables clave.\n\nIdentificación de valores faltantes antes y después de la limpieza.\n\nEstadísticas descriptivas y boxplots de los componentes.\n\nEste enfoque permite mostrar resultados claros y reproducibles sin comprometer la estabilidad del informe."
   },
   {
     "objectID": "data_cleaning.html#diagrama-del-proceso-nbi",
     "href": "data_cleaning.html#diagrama-del-proceso-nbi",
-    "title": "Limpieza y Preparación de Datos",
+    "title": "Preparación y Limpieza de Datos",
     "section": "",
-    "text": "flowchart LR\n\nA[\"📥 Carga de datos&lt;br&gt;&lt;a href='https://www.censoecuador.gob.ec/data-censo-ecuador/#bddvdos'&gt;Fuente INEC&lt;/a&gt;\"] --&gt; B[\"📦 ZIP → Parquet\"]\nB --&gt; C[\" Unión de bases&lt;br&gt;Población, Hogar, Vivienda\"]\nC --&gt; D[\" Construcción de dimensiones NBI\"]\n\n\nD --&gt; D1[\"💰 Capacidad económica\"]\nD --&gt; D2[\"🎓 Educación\"]\nD --&gt; D3[\"🏠 Vivienda\"]\nD --&gt; D4[\"🚿 Servicios\"]\nD --&gt; D5[\"👨‍👩‍👧 Hacinamiento\"]\n\nD1 --&gt; E[\"🧮 Índice NBI\"]\nD2 --&gt; E\nD3 --&gt; E\nD4 --&gt; E\nD5 --&gt; E\n\nE --&gt; F[\" Base final&lt;br&gt;Nivel persona\"]"
+    "text": "%%{init: {\n  'themeVariables': { \n    'fontSize': '30px'\n  },\n  'flowchart': {\n    'nodeSpacing': 70,\n    'rankSpacing': 90,\n    'curve': 'basis'\n  }\n}}%%\nflowchart LR\n\nclassDef etapa fill:#f2f2f2,stroke:#888,stroke-width:1.5px,color:#333;\nclassDef proceso fill:#e6f0fa,stroke:#4a90e2,stroke-width:1.5px,color:#1a3d6d;\nclassDef dim fill:#fff3db,stroke:#e6a23c,stroke-width:1.5px,color:#8a5a00;\nclassDef final fill:#e6f9e6,stroke:#67c23a,stroke-width:1.5px,color:#2d6a1f;\n\nA[\"📥 Carga de datos&lt;br/&gt;Fuente: INEC\"]:::etapa\nB[\"📦 ZIP → Parquet\"]:::proceso\nC[\"🧩 Unión de bases&lt;br/&gt;Población · Hogar · Vivienda\"]:::proceso\nD[\"🛠️ Construcción de dimensiones NBI\"]:::proceso\n\nD1[\"💰 Capacidad económica\"]:::dim\nD2[\"🎓 Educación\"]:::dim\nD3[\"🏠 Vivienda\"]:::dim\nD4[\"🚿 Servicios\"]:::dim\nD5[\"👨‍👩‍👧 Hacinamiento\"]:::dim\n\nE[\"🧮 Índice NBI\"]:::proceso\nF[\"📊 Base final&lt;br/&gt;Nivel persona\"]:::final\n\nA --&gt; B --&gt; C --&gt; D\n\nD --&gt; D1\nD --&gt; D2\nD --&gt; D3\nD --&gt; D4\nD --&gt; D5\n\nD1 --&gt; E\nD2 --&gt; E\nD3 --&gt; E\nD4 --&gt; E\nD5 --&gt; E\n\nE --&gt; F"
   },
   {
     "objectID": "data_cleaning.html#fuente-de-datos",
     "href": "data_cleaning.html#fuente-de-datos",
-    "title": "Limpieza y Preparación de Datos",
+    "title": "Preparación y Limpieza de Datos",
     "section": "",
-    "text": "Puedes descargar la base oficial del INEC aquí:\n👉 https://www.ecuadorencifras.gob.ec/documentos/web-inec/bd-censo/cantonal/BDD_CPV2022_CANT_CSV.zip"
+    "text": "La base de datos utilizada proviene del Censo Nacional de Población y Vivienda 2022 del INEC.\nDescargar base de datos INEC"
   },
   {
     "objectID": "data_cleaning.html#dimensiones-del-índice-nbi",
     "href": "data_cleaning.html#dimensiones-del-índice-nbi",
-    "title": "Limpieza y Preparación de Datos",
+    "title": "Preparación y Limpieza de Datos",
     "section": "",
-    "text": "Selecciona una dimensión para ver su explicación:\n\n💰 Capacidad económica🎓 Acceso a educación básica🏠 Acceso a vivienda🚿 Acceso a servicios básicos👨‍👩‍👧 Hacinamiento\n\n\nEl hogar se considera privado en esta dimensión si se cumplen ambas condiciones:\n\nLos años de escolaridad del jefe(a) de hogar son menores o iguales a 2 años\n\nExisten más de tres personas por cada persona ocupada\n\nRefleja limitaciones en capital humano y alta dependencia económica.\n\n\n\nEl hogar se considera privado si:\n\nExisten niños de 6 a 12 años que no asisten a clases\n\nMide exclusión educativa en edades clave.\n\n\n\nPrivación si se cumple al menos una:\n\nPiso de tierra u otros materiales precarios\n\nParedes de caña, estera u otros materiales inadecuados\n\nEvalúa calidad estructural de la vivienda.\n\n\n\nPrivación si:\n\nNo hay servicio higiénico adecuado\n\nEl agua no proviene de fuente segura\n\nRefleja condiciones sanitarias del hogar.\n\n\n\nPrivación si:\n\nHay más de 3 personas por dormitorio\n\nIndica sobreocupación del hogar."
+    "text": "A continuación, se describen las dimensiones que componen el indicador. Selecciona cada pestaña para ver el detalle:\n\n💰 Capacidad económica🎓 Acceso a educación básica🏠 Acceso a vivienda🚿 Acceso a servicios básicos👨‍👩‍👧 Hacinamiento\n\n\nEl hogar se considera privado en esta dimensión si se cumplen ambas condiciones:\n\nLos años de escolaridad del jefe(a) de hogar son menores o iguales a 2 años\n\nExisten más de tres personas por cada persona ocupada\n\nEsta dimensión refleja limitaciones en capital humano y alta dependencia económica.\n\n\nEl hogar se considera privado si:\n\nExisten niños de 6 a 12 años que no asisten a clases\n\nEsta dimensión mide exclusión educativa en edades clave.\n\n\nSe considera privación si se cumple al menos una de las siguientes condiciones:\n\nPiso de tierra u otros materiales precarios\n\nParedes de caña, estera u otros materiales inadecuados\n\nEvalúa la calidad estructural de la vivienda.\n\n\nSe considera privación si:\n\nNo existe servicio higiénico adecuado\n\nEl agua no proviene de una fuente segura\n\nRefleja condiciones sanitarias del hogar.\n\n\nSe considera privación si:\n\nHay más de 3 personas por dormitorio\n\nIndica sobreocupación del hogar."
   },
   {
     "objectID": "data_cleaning.html#interpretación-del-nbi",
     "href": "data_cleaning.html#interpretación-del-nbi",
+    "title": "Preparación y Limpieza de Datos",
+    "section": "",
+    "text": "Un hogar se clasifica como pobre por NBI si presenta al menos una de las cinco privaciones.\nEste enfoque permite medir la pobreza desde múltiples dimensiones, superando las limitaciones de indicadores basados únicamente en ingresos.\n\n# =========================================\n#  ANÁLISIS DE NBI CON ALTAIR (ANTES Y DESPUÉS)\n# =========================================\n\nimport pandas as pd\nimport numpy as np\nimport pyarrow as pq\nimport altair as alt\n\n# Configuración estética\npd.set_option(\"display.max_columns\", None)\npd.set_option(\"display.float_format\", \"{:.2f}\".format)\nalt.data_transformers.disable_max_rows()  # Para datasets grandes\n\n# ================================\n# 1. Cargar datos\n# ================================\nprint(\"===================================\")\nprint(\" 1. CARGA DE DATOS\")\nprint(\"===================================\")\ndf = pd.read_parquet(\"data/df_final.parquet\")\nprint(f\"Dataset cargado con {df.shape[0]:,} filas y {df.shape[1]} columnas.\\n\")\n\n# ================================\n# 2. Selección de variables\n# ================================\nprint(\"===================================\")\nprint(\" 2. SELECCIÓN DE VARIABLES\")\nprint(\"===================================\")\ncols = [\"ID_PER\", \"nbi\", \"comp1\", \"comp2\", \"comp3\", \"comp4\", \"comp5\", \"P01\", \"I01\", \"AUR\"]\ndf = df[cols]\nprint(f\"Variables seleccionadas: {cols}\\n\")\n\n# ================================\n# 3. Valores perdidos ANTES de limpieza\n# ================================\nprint(\"===================================\")\nprint(\" 3. DATOS FALTANTES ANTES DE LIMPIEZA\")\nprint(\"===================================\")\nmissing_before = df.isnull().sum().to_frame(name=\"Valores perdidos\")\nmissing_before[\"Porcentaje (%)\"] = (missing_before[\"Valores perdidos\"] / len(df)) * 100\ndisplay(missing_before)\n\n# Gráfico de missing con Altair\nmissing_chart_before = alt.Chart(missing_before.reset_index()).mark_bar(color=\"#1f77b4\").encode(\n    x=alt.X(\"index:N\", title=\"Variable\"),\n    y=alt.Y(\"Porcentaje (%):Q\", title=\"Porcentaje de missing\"),\n    tooltip=[\"index\", \"Valores perdidos\", \"Porcentaje (%)\"]\n).properties(\n    title=\"Porcentaje de datos faltantes por variable (ANTES de limpieza)\",\n    width=600,\n    height=400\n)\nmissing_chart_before.display()\n\n# ================================\n# 4. Histograma de NBI\n# ================================\nprint(\"===================================\")\nprint(\" 4. HISTOGRAMA DE NBI\")\nprint(\"===================================\")\n\nhist_nbi = alt.Chart(df).mark_bar(color=\"#ff7f0e\").encode(\n    alt.X(\"nbi:Q\", bin=alt.Bin(maxbins=30), title=\"NBI\"),\n    alt.Y(\"count()\", title=\"Frecuencia\"),\n    tooltip=[\"count()\"]\n).properties(\n    title=\"Distribución de NBI (ANTES de limpieza)\",\n    width=600,\n    height=400\n)\nhist_nbi.display()\n\n# ================================\n# 5. Boxplots de los componentes\n# ================================\nprint(\"===================================\")\nprint(\" 5. BOXPLOTS DE COMPONENTES\")\nprint(\"===================================\")\ncomp_cols = [\"comp1\", \"comp2\", \"comp3\", \"comp4\", \"comp5\"]\ndf_long = df.melt(id_vars=[\"ID_PER\"], value_vars=comp_cols, var_name=\"Componente\", value_name=\"Valor\")\n\nboxplot_comp = alt.Chart(df_long).mark_boxplot().encode(\n    x=alt.X(\"Componente:N\"),\n    y=alt.Y(\"Valor:Q\"),\n    color=alt.Color(\"Componente:N\", legend=None),\n    tooltip=[\"Componente\", \"Valor\"]\n).properties(\n    title=\"Distribución de los componentes comp1 a comp5 (ANTES de limpieza)\",\n    width=600,\n    height=400\n)\nboxplot_comp.display()\n\n# ================================\n# 6. LIMPIEZA DE DATOS\n# ================================\nprint(\"===================================\")\nprint(\" 6. LIMPIEZA DE DATOS\")\nprint(\"===================================\")\nprint(\"- Rellenando con 0 los valores faltantes de comp1 a comp5\")\ndf[comp_cols] = df[comp_cols].fillna(0)\nprint(\"- Eliminando filas con NBI faltante\")\ndf = df.dropna(subset=[\"nbi\"])\nprint(f\"Dimensiones después de limpieza: {df.shape[0]:,} filas y {df.shape[1]} columnas\\n\")\n\n# ================================\n# 7. Valores perdidos DESPUÉS de limpieza\n# ================================\nprint(\"===================================\")\nprint(\" 6. DATOS FALTANTES DESPUÉS DE LA LIMPIEZA\")\nprint(\"===================================\")\nmissing_after = df.isnull().sum().to_frame(name=\"Valores perdidos\")\nmissing_after[\"Porcentaje (%)\"] = (missing_after[\"Valores perdidos\"] / len(df)) * 100\ndisplay(missing_after)\n\n\n\n# ================================\n# 8. Estadísticas descriptivas\n# ================================\nprint(\"===================================\")\nprint(\" 7. ESTADÍSTICAS DESCRIPTIVAS\")\nprint(\"===================================\")\ndesc = df.describe().T\ndesc[\"median\"] = df.median(numeric_only=True)\ndesc = desc[[\"count\", \"mean\", \"median\", \"std\", \"min\", \"25%\", \"50%\", \"75%\", \"max\"]]\ndisplay(desc)\n\n===================================\n 1. CARGA DE DATOS\n===================================\nDataset cargado con 16,938,986 filas y 94 columnas.\n\n===================================\n 2. SELECCIÓN DE VARIABLES\n===================================\nVariables seleccionadas: ['ID_PER', 'nbi', 'comp1', 'comp2', 'comp3', 'comp4', 'comp5', 'P01', 'I01', 'AUR']\n\n===================================\n 3. DATOS FALTANTES ANTES DE LIMPIEZA\n===================================\n\n\n\n\n\n\n\n\n\nValores perdidos\nPorcentaje (%)\n\n\n\n\nID_PER\n0\n0.00\n\n\nnbi\n54588\n0.32\n\n\ncomp1\n54588\n0.32\n\n\ncomp2\n9620291\n56.79\n\n\ncomp3\n54588\n0.32\n\n\ncomp4\n54588\n0.32\n\n\ncomp5\n54588\n0.32\n\n\nP01\n0\n0.00\n\n\nI01\n0\n0.00\n\n\nAUR\n0\n0.00\n\n\n\n\n\n\n\n\n\n\n\n\n\n===================================\n 4. HISTOGRAMA DE NBI\n==================================="
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "",
+    "text": "El presente proyecto analiza la distribución de las Necesidades Básicas Insatisfechas (NBI) a nivel provincial en Ecuador, con el objetivo de identificar desigualdades territoriales y comprender qué tipos de carencias predominan en cada territorio.\nEl estudio del NBI es clave para entender las condiciones de vida de la población y apoyar la planificación de políticas públicas, así como la asignación eficiente de recursos sociales."
+  },
+  {
+    "objectID": "index.html#variables-principales",
+    "href": "index.html#variables-principales",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "4.1 Variables principales",
+    "text": "4.1 Variables principales\n\nProvincia\n\nIndicadores de NBI por dimensión:\n\nCapacidad económica\n\nAcceso a educación básica\n\nAcceso a vivienda\n\nAcceso a servicios básicos\n\nHacinamiento\n\n\nPoblación total\n\nNúmero de personas con NBI\n\nÁrea Urbana o Rural\n\nLas variables son principalmente categóricas y numéricas, lo que permite realizar análisis comparativos y agregaciones."
+  },
+  {
+    "objectID": "index.html#mapa-coroplético",
+    "href": "index.html#mapa-coroplético",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "6.1 Mapa coroplético",
+    "text": "6.1 Mapa coroplético\nSe propone un mapa coroplético a nivel provincial, donde cada provincia se colorea según el porcentaje de población con NBI. Esta visualización permite identificar rápidamente zonas con mayor nivel de vulnerabilidad."
+  },
+  {
+    "objectID": "index.html#gráfico-de-barras-interactivo",
+    "href": "index.html#gráfico-de-barras-interactivo",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "6.2 Gráfico de barras interactivo",
+    "text": "6.2 Gráfico de barras interactivo\nComo complemento, se utilizará un gráfico de barras que se activará al seleccionar una provincia en el mapa. Cada barra representará un tipo de NBI, facilitando la comparación entre categorías.\n\n6.2.1 Justificación\nEl gráfico de barras es una herramienta adecuada para comparar categorías discretas y permite identificar de forma clara el tipo de carencia predominante en cada provincia. Su uso mantiene consistencia visual en el análisis."
+  },
+  {
+    "objectID": "index.html#contexto-del-problema-1",
+    "href": "index.html#contexto-del-problema-1",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "8.1 Contexto del problema",
+    "text": "8.1 Contexto del problema\n\n\n\n\n\n\nNote\n\n\n\nEl presente proyecto analiza la distribución de las Necesidades Básicas Insatisfechas (NBI) a nivel provincial en Ecuador, con el objetivo de identificar desigualdades territoriales y comprender qué tipo de carencias predominan en cada provincia.\n\n\nEl estudio de las NBI es clave para entender las condiciones de vida de la población y apoyar la planificación de políticas públicas, así como la asignación eficiente de recursos sociales."
+  },
+  {
+    "objectID": "index.html#motivación-del-análisis-1",
+    "href": "index.html#motivación-del-análisis-1",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "8.2 Motivación del análisis",
+    "text": "8.2 Motivación del análisis\n\n\nLas desigualdades sociales no se distribuyen de manera homogénea en el territorio. Por ello, es fundamental contar con herramientas visuales que permitan:\n\nDetectar provincias con mayor vulnerabilidad\n\nIdentificar necesidades críticas\n\nExplorar patrones geográficos\n\n\n\n\n\n\n\n\n\nTip\n\n\n\nEste análisis busca generar evidencia clara para mejorar la toma de decisiones públicas y la focalización de recursos."
+  },
+  {
+    "objectID": "index.html#preguntas-de-investigación-1",
+    "href": "index.html#preguntas-de-investigación-1",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "8.3 Preguntas de investigación",
+    "text": "8.3 Preguntas de investigación\n\n\n\n\n\n\nImportant\n\n\n\n\n¿Cómo se distribuye el NBI entre las provincias del país?\n\n¿Qué tipo de NBI predomina en cada provincia?\n\n¿Existen patrones geográficos claros en estas carencias?"
+  },
+  {
+    "objectID": "index.html#dataset-utilizado-1",
+    "href": "index.html#dataset-utilizado-1",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "8.4 Dataset utilizado",
+    "text": "8.4 Dataset utilizado\nEl dataset proviene del Censo Nacional de Población y Vivienda del INEC (2022).\n\n8.4.1 Variables principales\n\nProvincia\n\nIndicadores de NBI por dimensión:\n\nCapacidad económica\n\nAcceso a educación básica\n\nAcceso a vivienda\n\nAcceso a servicios básicos\n\nHacinamiento\n\n\nPoblación total\n\nPersonas con NBI\n\nSexo"
+  },
+  {
+    "objectID": "index.html#enfoque-analítico-1",
+    "href": "index.html#enfoque-analítico-1",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "8.5 Enfoque analítico",
+    "text": "8.5 Enfoque analítico\nEl análisis se centra en:\n\nComparación entre provincias\n\nIdentificación de composiciones\n\nDetección de patrones espaciales\n\nEstas tareas permiten analizar magnitudes, distribuciones y relaciones geográficas."
+  },
+  {
+    "objectID": "index.html#visualizaciones-propuestas-1",
+    "href": "index.html#visualizaciones-propuestas-1",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "8.6 Visualizaciones propuestas",
+    "text": "8.6 Visualizaciones propuestas\n\n8.6.1 Mapa coroplético\n\n\n\n\n\n\nNote\n\n\n\nCada provincia se colorea según el porcentaje de población con NBI, permitiendo identificar rápidamente zonas con mayor vulnerabilidad.\n\n\n\n\n8.6.2 Gráfico de barras interactivo\nAl seleccionar una provincia en el mapa, se despliega un gráfico de barras con los tipos de NBI.\n\n\n8.6.3 Justificación\nEl gráfico de barras permite comparar categorías de manera clara y consistente, alineándose con buenas prácticas de visualización."
+  },
+  {
+    "objectID": "index.html#secciones-del-proyecto-1",
+    "href": "index.html#secciones-del-proyecto-1",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "8.7 Secciones del proyecto",
+    "text": "8.7 Secciones del proyecto\n\n\n\n8.7.1 Preparación de datos\nLimpieza y exploración\n\n\n\n8.7.2 Visualizaciones\nAnálisis interactivo"
+  },
+  {
+    "objectID": "index.html#valor-del-proyecto-1",
+    "href": "index.html#valor-del-proyecto-1",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "8.8 Valor del proyecto",
+    "text": "8.8 Valor del proyecto\n\n\n\n\n\n\nTip\n\n\n\nEste proyecto permite transformar datos complejos en evidencia visual clara, facilitando la comprensión de desigualdades territoriales y apoyando la toma de decisiones basada en datos."
+  },
+  {
+    "objectID": "visualizations.html",
+    "href": "visualizations.html",
+    "title": "Análisis de NBI con Altair",
+    "section": "",
+    "text": "El NBI alcanza al 39.63% de las personas y al 37.10% de los hogares.\nLa brecha territorial domina el análisis: en hogares, el NBI es de 60.68% en área rural, frente a 23.60% en área urbana.\nLa provincia con mayor incidencia es Orellana (63.45%), y la de menor incidencia es Pichincha (13.86%).\nEn volumen absoluto, Guayas concentra la mayor cantidad de hogares con NBI (467,718), seguida por Manabí (287,836).\nEntre los hogares con NBI, la privación más extendida es el acceso a servicios básicos, presente en 79.26% de esos hogares.\nEl 69.48% de los hogares con NBI presenta una sola carencia y el 30.52% acumula dos o más."
+  },
+  {
+    "objectID": "visualizations.html#variables-principales",
+    "href": "visualizations.html#variables-principales",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "4.1 Variables principales",
+    "text": "4.1 Variables principales\n\nProvincia (categórica)\n\nIndicadores de NBI por dimensión:\n\nCapacidad económica\n\nAcceso a educación básica\n\nAcceso a vivienda\n\nAcceso a servicios básicos\n\nHacinamiento\n\n\nPoblación total\n\nNúmero de personas con NBI\n\nSexo\n\nLas variables son principalmente categóricas y numéricas, lo que permite realizar análisis comparativos y agregaciones."
+  },
+  {
+    "objectID": "visualizations.html#mapa-coroplético",
+    "href": "visualizations.html#mapa-coroplético",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "6.1 Mapa coroplético",
+    "text": "6.1 Mapa coroplético\nSe propone un mapa coroplético a nivel provincial, donde cada provincia se colorea según el porcentaje de población con NBI. Esta visualización permite identificar rápidamente zonas con mayor nivel de vulnerabilidad."
+  },
+  {
+    "objectID": "visualizations.html#gráfico-de-barras-interactivo",
+    "href": "visualizations.html#gráfico-de-barras-interactivo",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "6.2 Gráfico de barras interactivo",
+    "text": "6.2 Gráfico de barras interactivo\nComo complemento, se utilizará un gráfico de barras que se activará al seleccionar una provincia en el mapa. Cada barra representará un tipo de NBI, facilitando la comparación entre categorías.\n\n6.2.1 Justificación\nEl gráfico de barras es una herramienta adecuada para comparar categorías discretas y permite identificar de forma clara el tipo de carencia predominante en cada provincia. Su uso mantiene consistencia visual en el análisis."
+  },
+  {
+    "objectID": "visualizations.html#diagrama-del-proceso-nbi",
+    "href": "visualizations.html#diagrama-del-proceso-nbi",
+    "title": "Preparación y Limpieza de Datos",
+    "section": "",
+    "text": "%%{init: {\n  'themeVariables': { \n    'fontSize': '30px'\n  },\n  'flowchart': {\n    'nodeSpacing': 70,\n    'rankSpacing': 90,\n    'curve': 'basis'\n  }\n}}%%\nflowchart LR\n\nclassDef etapa fill:#f2f2f2,stroke:#888,stroke-width:1.5px,color:#333;\nclassDef proceso fill:#e6f0fa,stroke:#4a90e2,stroke-width:1.5px,color:#1a3d6d;\nclassDef dim fill:#fff3db,stroke:#e6a23c,stroke-width:1.5px,color:#8a5a00;\nclassDef final fill:#e6f9e6,stroke:#67c23a,stroke-width:1.5px,color:#2d6a1f;\n\nA[\"📥 Carga de datos&lt;br/&gt;Fuente: INEC\"]:::etapa\nB[\"📦 ZIP → Parquet\"]:::proceso\nC[\"🧩 Unión de bases&lt;br/&gt;Población · Hogar · Vivienda\"]:::proceso\nD[\"🛠️ Construcción de dimensiones NBI\"]:::proceso\n\nD1[\"💰 Capacidad económica\"]:::dim\nD2[\"🎓 Educación\"]:::dim\nD3[\"🏠 Vivienda\"]:::dim\nD4[\"🚿 Servicios\"]:::dim\nD5[\"👨‍👩‍👧 Hacinamiento\"]:::dim\n\nE[\"🧮 Índice NBI\"]:::proceso\nF[\"📊 Base final&lt;br/&gt;Nivel persona\"]:::final\n\nA --&gt; B --&gt; C --&gt; D\n\nD --&gt; D1\nD --&gt; D2\nD --&gt; D3\nD --&gt; D4\nD --&gt; D5\n\nD1 --&gt; E\nD2 --&gt; E\nD3 --&gt; E\nD4 --&gt; E\nD5 --&gt; E\n\nE --&gt; F"
+  },
+  {
+    "objectID": "visualizations.html#fuente-de-datos",
+    "href": "visualizations.html#fuente-de-datos",
+    "title": "Preparación y Limpieza de Datos",
+    "section": "",
+    "text": "La base de datos utilizada proviene del Censo Nacional de Población y Vivienda 2022 del INEC.\nDescargar base de datos INEC"
+  },
+  {
+    "objectID": "visualizations.html#dimensiones-del-índice-nbi",
+    "href": "visualizations.html#dimensiones-del-índice-nbi",
+    "title": "Preparación y Limpieza de Datos",
+    "section": "",
+    "text": "A continuación, se describen las dimensiones que componen el indicador. Selecciona cada pestaña para ver el detalle:\n\n💰 Capacidad económica🎓 Acceso a educación básica🏠 Acceso a vivienda🚿 Acceso a servicios básicos👨‍👩‍👧 Hacinamiento\n\n\nEl hogar se considera privado en esta dimensión si se cumplen ambas condiciones:\n\nLos años de escolaridad del jefe(a) de hogar son menores o iguales a 2 años\n\nExisten más de tres personas por cada persona ocupada\n\nEsta dimensión refleja limitaciones en capital humano y alta dependencia económica.\n\n\nEl hogar se considera privado si:\n\nExisten niños de 6 a 12 años que no asisten a clases\n\nEsta dimensión mide exclusión educativa en edades clave.\n\n\nSe considera privación si se cumple al menos una de las siguientes condiciones:\n\nPiso de tierra u otros materiales precarios\n\nParedes de caña, estera u otros materiales inadecuados\n\nEvalúa la calidad estructural de la vivienda.\n\n\nSe considera privación si:\n\nNo existe servicio higiénico adecuado\n\nEl agua no proviene de una fuente segura\n\nRefleja condiciones sanitarias del hogar.\n\n\nSe considera privación si:\n\nHay más de 3 personas por dormitorio\n\nIndica sobreocupación del hogar."
+  },
+  {
+    "objectID": "visualizations.html#interpretación-del-nbi",
+    "href": "visualizations.html#interpretación-del-nbi",
+    "title": "Preparación y Limpieza de Datos",
+    "section": "",
+    "text": "Un hogar se clasifica como pobre por NBI si presenta al menos una de las cinco privaciones.\nEste enfoque permite medir la pobreza desde múltiples dimensiones, superando las limitaciones de indicadores basados únicamente en ingresos."
+  },
+  {
+    "objectID": "visualizations.html#resumen-ejecutivo",
+    "href": "visualizations.html#resumen-ejecutivo",
+    "title": "Análisis de NBI con Altair",
+    "section": "",
+    "text": "El NBI alcanza al 39.63% de las personas y al 37.10% de los hogares.\nLa brecha territorial domina el análisis: en hogares, el NBI es de 60.68% en área rural, frente a 23.60% en área urbana.\nLa provincia con mayor incidencia es Orellana (63.45%), y la de menor incidencia es Pichincha (13.86%).\nEn volumen absoluto, Guayas concentra la mayor cantidad de hogares con NBI (467,718), seguida por Manabí (287,836).\nEntre los hogares con NBI, la privación más extendida es el acceso a servicios básicos, presente en 79.26% de esos hogares.\nEl 69.48% de los hogares con NBI presenta una sola carencia y el 30.52% acumula dos o más."
+  },
+  {
+    "objectID": "visualizations.html#cobertura-general",
+    "href": "visualizations.html#cobertura-general",
+    "title": "Análisis de NBI con Altair",
+    "section": "Cobertura general",
+    "text": "Cobertura general\n\n\n\nNivel\nUniverso\nCon NBI\nTasa NBI (%)\n\n\n\n\nPersonas\n16,938,986\n6,713,750\n39.63%\n\n\nHogares (P01 == 1)\n5,188,827\n1,925,141\n37.10%\n\n\n\n\n\nLa diferencia entre área urbana y rural es el patrón más robusto del archivo. El promedio nacional es útil como contexto, pero, por sí solo, esconde una fractura espacial muy marcada."
+  },
+  {
+    "objectID": "visualizations.html#desigualdad-territorial",
+    "href": "visualizations.html#desigualdad-territorial",
+    "title": "Análisis de NBI con Altair",
+    "section": "Desigualdad territorial",
+    "text": "Desigualdad territorial\n\n\n\n\nHay dos lecturas complementarias. La primera es la incidencia, donde sobresalen Orellana, Esmeraldas, Manabí y Los Ríos. La segunda es la masa de hogares afectados, donde Guayas y Manabí pesan más por su tamaño poblacional.\n\nProvincias con mayor incidencia\n\n\n\n\n\n\n\n\n\n\nProvincia\nHogares\nHogares con NBI\nTasa hogares NBI (%)\nParticipación del total NBI (%)\n\n\n\n\nOrellana\n50,843\n32,259\n63.45%\n1.68%\n\n\nEsmeraldas\n166,694\n101,320\n60.78%\n5.26%\n\n\nManabí\n484,455\n287,836\n59.41%\n14.95%\n\n\nLos Ríos\n282,171\n167,086\n59.21%\n8.68%\n\n\nMorona Santiago\n52,453\n30,558\n58.26%\n1.59%\n\n\nBolívar\n63,428\n36,179\n57.04%\n1.88%\n\n\nSucumbíos\n59,083\n32,695\n55.34%\n1.70%\n\n\nNapo\n35,615\n19,589\n55.00%\n1.02%\n\n\n\n\n\nProvincias con más hogares afectados\n\n\n\n\n\n\n\n\n\nProvincia\nHogares con NBI\nParticipación del total NBI (%)\nTasa hogares NBI (%)\n\n\n\n\nGuayas\n467,718\n24.30%\n35.46%\n\n\nManabí\n287,836\n14.95%\n59.41%\n\n\nLos Ríos\n167,086\n8.68%\n59.21%\n\n\nPichincha\n137,877\n7.16%\n13.86%\n\n\nEsmeraldas\n101,320\n5.26%\n60.78%"
+  },
+  {
+    "objectID": "visualizations.html#cuatro-lecturas-nuevas-del-nbi",
+    "href": "visualizations.html#cuatro-lecturas-nuevas-del-nbi",
+    "title": "Análisis de NBI con Altair",
+    "section": "Cuatro lecturas nuevas del NBI",
+    "text": "Cuatro lecturas nuevas del NBI\n\n1. Mapa provincial del NBI\n\n\nEl mapa vuelve mucho más evidente la geografía del NBI. La mayor intensidad se concentra en la Amazonía y en parte de la Costa, mientras que la Sierra centro-norte y, sobre todo, Pichincha, aparecen con menores niveles relativos. La utilidad de este gráfico es territorial: muestra que el NBI no está distribuido de forma homogénea y que la política pública debe pensar en corredores de rezago, no solo en provincias aisladas.\n\n\n2. Dumbbell urbano-rural por provincia\n\n\nEste gráfico mejora la lectura de la brecha territorial porque deja ver, simultáneamente, el nivel urbano, el nivel rural y la distancia entre ambos. La conclusión fuerte es que casi todas las provincias tienen un salto importante entre sus dos espacios, pero la magnitud de esa brecha cambia mucho. Chimborazo, Morona Santiago, Bolívar, Napo y Loja muestran contrastes especialmente severos, lo que sugiere una desigualdad interna muy marcada dentro de una misma provincia.\n\n\n3. Desviación provincial respecto al promedio nacional\n\n\nEste heatmap no muestra el valor bruto de cada componente, sino cuánto se aleja cada provincia del promedio nacional. Eso permite encontrar perfiles realmente atípicos:\n\nSanta Elena sobresale muy por encima del promedio en acceso a vivienda y hacinamiento.\nLoja y Chimborazo también destacan por un peso inusualmente alto de acceso a vivienda.\nOrellana, Bolívar, Morona Santiago, Napo y Pastaza se despegan del promedio por la enorme centralidad del acceso a servicios básicos.\nEn cambio, Pichincha queda muy por debajo del promedio en acceso a servicios básicos, lo que confirma que su perfil de NBI es distinto al de las provincias con mayor rezago estructural.\n\n\n\n4. Severidad del NBI por área\n\n\nLa severidad cambia entre área urbana y rural. En urbano, el 75.20% de los hogares con NBI tiene una sola carencia; en rural, esa proporción baja a 65.59%. En sentido contrario, la acumulación de dos o más carencias sube de 24.80% en urbano a 34.41% en rural. Esto importa porque no toda incidencia tiene la misma profundidad: la ruralidad no solo tiene más NBI, sino también un NBI más complejo y acumulado."
+  },
+  {
+    "objectID": "visualizations.html#nbi-y-territorio",
+    "href": "visualizations.html#nbi-y-territorio",
+    "title": "Análisis de NBI con Altair",
+    "section": "NBI y territorio",
+    "text": "NBI y territorio\n\n\n\n\nEl perfil del NBI cambia bastante entre zonas urbanas y rurales:\n\nEn área rural, la carencia de acceso a servicios básicos aparece en 91.42% de los hogares con NBI.\nEn área urbana, aunque los servicios básicos siguen liderando, gana mucho más peso relativo el hacinamiento (34.47%) y el rezago en acceso a educación básica (6.89%).\nLa brecha rural-urbana no es uniforme. Provincias como Chimborazo, Morona Santiago, Bolívar, Napo y Loja muestran diferencias especialmente grandes entre sus zonas rurales y urbanas."
+  },
+  {
+    "objectID": "visualizations.html#qué-carencias-pesan-más-según-provincia",
+    "href": "visualizations.html#qué-carencias-pesan-más-según-provincia",
+    "title": "Análisis de NBI con Altair",
+    "section": "Qué carencias pesan más según provincia",
+    "text": "Qué carencias pesan más según provincia\n\n\n\n\nLa mezcla provincial del NBI no es idéntica:\n\nAcceso a servicios básicos domina en todas las provincias, pero es particularmente extremo en Orellana (92.90%), Bolívar (92.84%) y Morona Santiago (92.79%) dentro de los hogares con NBI.\nHacinamiento pesa mucho más en Santa Elena (39.84%) y Guayas (34.37%) que en la mayoría del país.\nEl componente de acceso a vivienda destaca en Santa Elena (39.49%), Loja (35.68%) y Chimborazo (31.17%).\nLa capacidad económica gana más peso relativo en Imbabura (19.37%) y Cañar (18.74%).\nLa carencia de acceso a educación básica es baja en términos generales, pero resalta más en Pichincha (8.97%) y Guayas (6.50%) que en el resto."
+  },
+  {
+    "objectID": "visualizations.html#perfil-de-carencias",
+    "href": "visualizations.html#perfil-de-carencias",
+    "title": "Análisis de NBI con Altair",
+    "section": "Perfil de carencias",
+    "text": "Perfil de carencias\n\n\n\n\nEl perfil de carencias no está repartido de manera uniforme. Acceso a servicios básicos domina claramente y una fracción importante de hogares acumula varias privaciones al mismo tiempo, lo que sugiere vulnerabilidad estructural y no solo casos aislados.\n\n\n\n\n\n\n\n\nComponente\nHogares afectados\nParticipación en hogares con NBI (%)\n\n\n\n\nAcceso a servicios básicos\n1,525,905\n79.26%\n\n\nHacinamiento\n458,483\n23.82%\n\n\nAcceso a vivienda\n378,384\n19.65%\n\n\nCapacidad económica\n210,044\n10.91%\n\n\nAcceso a educación básica\n76,816\n3.99%\n\n\n\n\n\n\n\n\n\n\n\nNúmero de componentes activos\nHogares\nParticipación dentro de hogares con NBI (%)\n\n\n\n\n1\n1,337,508\n69.48%\n\n\n2\n462,393\n24.02%\n\n\n3\n114,137\n5.93%\n\n\n4\n10,588\n0.55%\n\n\n5\n515\n0.03%"
+  },
+  {
+    "objectID": "visualizations.html#conclusiones",
+    "href": "visualizations.html#conclusiones",
+    "title": "Análisis de NBI con Altair",
+    "section": "Conclusiones",
+    "text": "Conclusiones\n\nEl NBI sigue siendo un fenómeno de gran escala: casi 4 de cada 10 personas y más de un tercio de los hogares aparecen con al menos una necesidad básica insatisfecha.\nLa brecha urbano-rural es la conclusión más fuerte del archivo. La ruralidad concentra una incidencia de NBI muy superior a la urbana y explica buena parte del nivel nacional.\nEl mapa del NBI es muy desigual. Orellana, Esmeraldas, Manabí, Los Ríos y Morona Santiago aparecen entre las provincias con mayor incidencia, mientras Pichincha queda muy por debajo del promedio.\nLa priorización cambia si se mira incidencia o cantidad de hogares. Provincias pequeñas lideran en tasa, pero Guayas y Manabí pesan más cuando la pregunta es dónde hay más hogares afectados.\nEl componente más frecuente es acceso a servicios básicos, lo que ubica el rezago sanitario y de acceso al agua entre los ejes más críticos de la pobreza estructural capturada por el NBI.\nLa ruralidad y la composición de carencias van juntas: donde el NBI es más alto, casi siempre se vuelve más dominante la falta de acceso a servicios básicos y, en varios casos, también el rezago en acceso a vivienda.\nAunque la mayoría de hogares con NBI tiene una sola carencia, 30.52% acumula dos o más. Ese grupo merece atención especial porque combina rezagos y, probablemente, enfrenta barreras más persistentes."
+  },
+  {
+    "objectID": "visualizations.html#lectura-para-política-pública",
+    "href": "visualizations.html#lectura-para-política-pública",
+    "title": "Análisis de NBI con Altair",
+    "section": "Lectura para política pública",
+    "text": "Lectura para política pública\n\n1. Acceso a servicios básicos\nEs el núcleo más duro del NBI. Su peso es abrumador en el área rural y domina especialmente en provincias como Orellana, Bolívar, Morona Santiago, Napo y Pastaza. La implicación es directa: si la política pública quiere mover rápido el NBI en los territorios más rezagados, la prioridad debe estar en agua segura, saneamiento y conexiones básicas.\n\n\n2. Acceso a vivienda\nEste componente gana relevancia en provincias donde la precariedad habitacional es más visible, como Santa Elena, Loja, Chimborazo y Manabí. Aquí no basta con ampliar cobertura de servicios; también hay un problema de calidad material de la vivienda. Eso apunta a programas de mejoramiento habitacional y reducción del déficit cualitativo.\n\n\n3. Hacinamiento\nEl hacinamiento pesa más en territorios urbanos y costeros, sobre todo en Santa Elena y Guayas. Eso sugiere que parte del NBI urbano no se explica tanto por ausencia de servicios, sino por presión demográfica sobre la vivienda. La respuesta de política debería combinar vivienda social, mejoramiento de barrios y ampliación de espacio habitable.\n\n\n4. Capacidad económica\nAunque su peso agregado es menor que el de servicios básicos, este componente resalta en Imbabura, Cañar, Azuay y Bolívar. Eso sugiere hogares donde la estructura económica y la dependencia interna limitan la capacidad de sostener bienestar. Aquí importan más las políticas de ingreso, empleo y fortalecimiento productivo que las soluciones puramente de infraestructura.\n\n\n5. Acceso a educación básica\nEs el componente menos frecuente en el agregado, pero no debe minimizarse. Su mayor peso relativo en Pichincha, Guayas y Santo Domingo de los Tsáchilas sugiere que, incluso en territorios con menor NBI total, persisten bolsones de exclusión educativa. La implicación es focalizar seguimiento escolar, permanencia y reinserción educativa, sobre todo en contextos urbanos.\n\n\n6. Priorización territorial\nEl informe sugiere una estrategia de doble entrada:\n\nIntervención intensiva por incidencia en provincias como Orellana, Esmeraldas, Manabí, Los Ríos y Morona Santiago, donde el NBI está más extendido.\nIntervención de escala por volumen en Guayas, Manabí, Los Ríos y Pichincha, donde se concentra una gran masa de hogares afectados.\n\n\n\n7. Hogares con múltiples carencias\nEl 30.52% de los hogares con NBI acumula dos o más privaciones. Ese grupo no debería tratarse con una sola política sectorial, porque combina problemas de infraestructura, vivienda, educación y estructura económica. Es el segmento donde más sentido tiene una intervención integral y territorializada."
+  },
+  {
+    "objectID": "visualizations.html#nota-metodológica",
+    "href": "visualizations.html#nota-metodológica",
+    "title": "Análisis de NBI con Altair",
+    "section": "Nota metodológica",
+    "text": "Nota metodológica\nLos gráficos en Altair fueron exportados como HTML y se incluyen desde report_assets/. A nivel de hogar se usa P01 == 1 como aproximación operativa a la jefatura del hogar. El diccionario en Excel identifica la variable NBI, pero no detalla comp1 a comp5; por eso esos componentes se nombran siguiendo el orden metodológico del documento oficial de INEC sobre NBI para el Censo 2022:\n\ncomp1: Capacidad económica\ncomp2: Acceso a educación básica\ncomp3: Acceso a vivienda\ncomp4: Acceso a servicios básicos\ncomp5: Hacinamiento\n\nFuentes metodológicas:\n\nDiccionario de variables: c:\\Users\\sebas\\Downloads\\DICCIONARIO_BDD_CANTON (1).xlsx\nINEC, Pobreza por Necesidades Básicas Insatisfechas (NBI): Una mirada desde el Censo 2022: https://www.ecuadorencifras.gob.ec/documentos/web-inec/Censo2022/Documento_NBI_24.09.25.pdf\nGeometría provincial para el mapa: https://raw.githubusercontent.com/Handerica/COVID-19_Ecuador/master/provs-ec.json"
+  },
+  {
+    "objectID": "index.html#mapa-coroplético-del-nbi-provincial",
+    "href": "index.html#mapa-coroplético-del-nbi-provincial",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "6.1 1. Mapa coroplético del NBI provincial",
+    "text": "6.1 1. Mapa coroplético del NBI provincial\nUn mapa coroplético muestra la incidencia del NBI por provincia. Esta visualización permite identificar:\n\nConcentración del NBI en la Amazonía y parte de la Costa\n\nNiveles relativamente bajos en la Sierra centro-norte\n\nEl contraste marcado entre provincias con rezago estructural y aquellas con mejores condiciones"
+  },
+  {
+    "objectID": "index.html#gráfico-dumbbell-urbanorural",
+    "href": "index.html#gráfico-dumbbell-urbanorural",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "6.2 2. Gráfico dumbbell urbano–rural",
+    "text": "6.2 2. Gráfico dumbbell urbano–rural\nEste gráfico compara la incidencia del NBI entre áreas urbanas y rurales dentro de cada provincia.\nPermite observar:\n\nBrechas internas significativas\n\nProvincias con contrastes especialmente altos (Chimborazo, Morona Santiago, Bolívar, Napo, Loja)\n\nLa magnitud del salto urbano–rural como indicador de desigualdad territorial"
+  },
+  {
+    "objectID": "index.html#heatmap-de-desviaciones-respecto-al-promedio-nacional",
+    "href": "index.html#heatmap-de-desviaciones-respecto-al-promedio-nacional",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "6.3 3. Heatmap de desviaciones respecto al promedio nacional",
+    "text": "6.3 3. Heatmap de desviaciones respecto al promedio nacional\nEste heatmap muestra cuánto se aleja cada provincia del promedio nacional en cada componente del NBI.\nEs útil para identificar perfiles atípicos, como:\n\nSanta Elena: alto peso de vivienda y hacinamiento\n\nOrellana y Bolívar: predominio extremo de servicios básicos\n\nPichincha: valores muy por debajo del promedio en servicios básicos"
+  },
+  {
+    "objectID": "index.html#gráfico-de-barras-de-composición-del-nbi",
+    "href": "index.html#gráfico-de-barras-de-composición-del-nbi",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "6.4 4. Gráfico de barras de composición del NBI",
+    "text": "6.4 4. Gráfico de barras de composición del NBI\nUn gráfico de barras resume la participación de cada componente dentro del total de hogares con NBI.\nPermite visualizar:\n\nDominancia del acceso a servicios básicos\n\nPeso relativo del hacinamiento y acceso a vivienda\n\nBaja incidencia del rezago educativo"
+  },
+  {
+    "objectID": "index.html#visualizaciones-espaciales",
+    "href": "index.html#visualizaciones-espaciales",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "6.1 1. Visualizaciones espaciales",
+    "text": "6.1 1. Visualizaciones espaciales\nIncluyen mapas coropléticos y representaciones geográficas.\nSe utilizan porque permiten:\n\nIdentificar patrones territoriales amplios\n\nDetectar zonas de concentración y rezago\n\nRelacionar el NBI con la distribución espacial de la población"
+  },
+  {
+    "objectID": "index.html#gráficos-comparativos-entre-grupos",
+    "href": "index.html#gráficos-comparativos-entre-grupos",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "6.2 2. Gráficos comparativos entre grupos",
+    "text": "6.2 2. Gráficos comparativos entre grupos\nIncluyen gráficos dumbbell, barras comparativas y distribuciones urbano–rural.\nSon útiles para:\n\nComparar niveles de NBI entre provincias o áreas\n\nVisualizar brechas internas dentro de una misma unidad territorial\n\nEvaluar la magnitud de las diferencias entre grupos poblacionales"
+  },
+  {
+    "objectID": "index.html#visualizaciones-multivariadas",
+    "href": "index.html#visualizaciones-multivariadas",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "6.3 3. Visualizaciones multivariadas",
+    "text": "6.3 3. Visualizaciones multivariadas\nComo heatmaps y matrices de desviaciones.\nSe emplean porque permiten:\n\nAnalizar simultáneamente varias dimensiones del NBI\n\nIdentificar perfiles provinciales atípicos\n\nDetectar patrones que no son evidentes en gráficos unidimensionales"
+  },
+  {
+    "objectID": "index.html#gráficos-de-composición",
+    "href": "index.html#gráficos-de-composición",
+    "title": "Análisis de Necesidades Básicas Insatisfechas (NBI) en Ecuador",
+    "section": "6.4 4. Gráficos de composición",
+    "text": "6.4 4. Gráficos de composición\nIncluyen barras apiladas, distribuciones de componentes y perfiles de carencias.\nSe utilizan para:\n\nMostrar qué componentes explican el NBI en cada territorio\n\nEvaluar la severidad y acumulación de carencias\n\nDiferenciar entre incidencia y complejidad del NBI\n\n\nEn conjunto, estas visualizaciones permiten construir una lectura integral del NBI, combinando análisis territorial, comparativo y estructural antes de profundizar en los resultados específicos."
+  },
+  {
+    "objectID": "data_cleaning.html#diagrama-del-procesamiento-inicial-de-la-base",
+    "href": "data_cleaning.html#diagrama-del-procesamiento-inicial-de-la-base",
     "title": "Limpieza y Preparación de Datos",
     "section": "",
-    "text": "Un hogar se clasifica como pobre por NBI si presenta al menos una de las cinco privaciones.\n\nEste enfoque permite medir la pobreza desde múltiples dimensiones, más allá del ingreso."
+    "text": "%%{init: {\n  'themeVariables': { \n    'fontSize': '25px'\n  },\n  'flowchart': {\n    'nodeSpacing': 70,\n    'rankSpacing': 90,\n    'curve': 'basis'\n  }\n}}%%\nflowchart LR\n\n%% ====== ESTILOS ======\nclassDef etapa fill:#f2f2f2,stroke:#888,stroke-width:1.5px,color:#333;\nclassDef proceso fill:#e6f0fa,stroke:#4a90e2,stroke-width:1.5px,color:#1a3d6d;\nclassDef dim fill:#fff3db,stroke:#e6a23c,stroke-width:1.5px,color:#8a5a00;\nclassDef final fill:#e6f9e6,stroke:#67c23a,stroke-width:1.5px,color:#2d6a1f;\n\n%% ====== NODOS ======\nA[\"📥 Carga de datos&lt;br/&gt;Fuente: INEC\"]:::etapa\nB[\"📦 ZIP → Parquet\"]:::proceso\nC[\"🧩 Unión de bases&lt;br/&gt;Población · Hogar · Vivienda\"]:::proceso\nD[\"🛠️ Construcción de dimensiones NBI\"]:::proceso\n\nD1[\"💰 Capacidad económica\"]:::dim\nD2[\"🎓 Educación\"]:::dim\nD3[\"🏠 Vivienda\"]:::dim\nD4[\"🚿 Servicios\"]:::dim\nD5[\"👨‍👩‍👧 Hacinamiento\"]:::dim\n\nE[\"🧮 Índice NBI\"]:::proceso\nF[\"📊 Base final&lt;br/&gt;Nivel persona\"]:::final\n\n%% ====== FLUJOS ======\nA --&gt; B --&gt; C --&gt; D\n\nD --&gt; D1\nD --&gt; D2\nD --&gt; D3\nD --&gt; D4\nD --&gt; D5\n\nD1 --&gt; E\nD2 --&gt; E\nD3 --&gt; E\nD4 --&gt; E\nD5 --&gt; E\n\nE --&gt; F"
+  },
+  {
+    "objectID": "data_cleaning.html#diagrama-del-proceso-del-dataset",
+    "href": "data_cleaning.html#diagrama-del-proceso-del-dataset",
+    "title": "Preparación y Limpieza de Datos",
+    "section": "",
+    "text": "%%{init: {\n  'themeVariables': { \n    'fontSize': '30px'\n  },\n  'flowchart': {\n    'nodeSpacing': 70,\n    'rankSpacing': 90,\n    'curve': 'basis'\n  }\n}}%%\nflowchart LR\n\nclassDef etapa fill:#f2f2f2,stroke:#888,stroke-width:1.5px,color:#333;\nclassDef proceso fill:#e6f0fa,stroke:#4a90e2,stroke-width:1.5px,color:#1a3d6d;\nclassDef dim fill:#fff3db,stroke:#e6a23c,stroke-width:1.5px,color:#8a5a00;\nclassDef final fill:#e6f9e6,stroke:#67c23a,stroke-width:1.5px,color:#2d6a1f;\n\nA[\"📥 Carga de datos&lt;br/&gt;Fuente: INEC\"]:::etapa\nB[\"📦 ZIP → Parquet\"]:::proceso\nC[\"🧩 Unión de bases&lt;br/&gt;Población · Hogar · Vivienda\"]:::proceso\nD[\"🛠️ Construcción de dimensiones NBI\"]:::proceso\n\nD1[\"💰 Capacidad económica\"]:::dim\nD2[\"🎓 Educación\"]:::dim\nD3[\"🏠 Vivienda\"]:::dim\nD4[\"🚿 Servicios\"]:::dim\nD5[\"👨‍👩‍👧 Hacinamiento\"]:::dim\n\nE[\"🧮 Índice NBI\"]:::proceso\nF[\"📊 Base final&lt;br/&gt;Nivel persona\"]:::final\n\nA --&gt; B --&gt; C --&gt; D\n\nD --&gt; D1\nD --&gt; D2\nD --&gt; D3\nD --&gt; D4\nD --&gt; D5\n\nD1 --&gt; E\nD2 --&gt; E\nD3 --&gt; E\nD4 --&gt; E\nD5 --&gt; E\n\nE --&gt; F"
+  },
+  {
+    "objectID": "data_cleaning.html#contexto-de-los-datos",
+    "href": "data_cleaning.html#contexto-de-los-datos",
+    "title": "Preparación y Limpieza de Datos",
+    "section": "",
+    "text": "El archivo resultante contiene 16,938,986 registros y 94 columnas.\nDebido a la magnitud de los datos, para garantizar que el informe sea estable y renderizable, el análisis se realizó sobre las variables de interés.\n\n\nPara simplificar el análisis y facilitar la visualización:\n\nLos datos fueron resumidos a nivel de provincia.\n\nSe agregaron métricas por área rural y urbana, así como por otras categorías relevantes.\n\nSe consolidaron las variables en tablas colapsadas y resúmenes para un análisis más eficiente.\n\n\n\n\n\ndata_summary/metrics.csv\n\ndata_summary/aur_summary.csv\n\ndata_summary/prov_summary.csv\n\ndata_summary/comp_summary.csv\n\ndata_summary/comp_count_summary.csv\n\ndata_summary/aur_comp_summary.csv\n\ndata_summary/prov_comp_summary.csv\n\ndata_summary/prov_area_summary.csv\n\ndata_summary/severity_area_summary.csv\n\ndata_summary/prov_comp_deviation.csv\n\n\n\n\nEn la siguiente sección se presentará el análisis exploratorio de los datos, incluyendo:\n\nDistribución de las variables clave.\n\nIdentificación de valores faltantes antes y después de la limpieza.\n\nEstadísticas descriptivas y boxplots de los componentes.\n\nEste enfoque permite mostrar resultados claros y reproducibles sin comprometer la estabilidad del informe."
   }
 ]

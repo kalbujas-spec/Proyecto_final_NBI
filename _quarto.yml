@@ -3,15 +3,15 @@ project:
   output-dir: docs
   
 website:
-  title: "Proyecto Final NBI"
+  title: "NBI en Ecuador"
   navbar:
     left:
       - href: index.qmd
         text: Inicio
       - href: data_cleaning.qmd
-        text: Limpieza de Datos
+        text: Preparación y exploración de datos
       - href: visualizations.qmd
-        text: Visualizaciones
+        text: Análisis y Visualizaciones
 
 format:
   html:
