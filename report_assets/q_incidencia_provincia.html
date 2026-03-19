@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.1.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-ca29d544c4bdbae42f4965ef4f1082ef"}, "mark": {"type": "bar", "cornerRadiusEnd": 4}, "encoding": {"color": {"field": "tasa_hogares_nbi", "legend": {"title": "Tasa (%)"}, "scale": {"scheme": "tealblues"}, "type": "quantitative"}, "tooltip": [{"field": "provincia", "title": "Provincia", "type": "nominal"}, {"field": "hogares", "format": ",", "title": "Hogares", "type": "quantitative"}, {"field": "hogares_nbi", "format": ",", "title": "Hogares con NBI", "type": "quantitative"}, {"field": "tasa_hogares_nbi", "format": ".2f", "title": "Tasa (%)", "type": "quantitative"}], "x": {"axis": {"labelExpr": "datum.value + '%'", "title": "Hogares con NBI (%)"}, "field": "tasa_hogares_nbi", "type": "quantitative"}, "y": {"field": "provincia", "sort": "-x", "title": "Provincia", "type": "nominal"}}, "height": 520, "title": "Incidencia de NBI por provincia", "width": 700, "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json", "datasets": {"data-ca29d544c4bdbae42f4965ef4f1082ef": [{"codigo": "22", "provincia": "Orellana", "hogares": 50843, "hogares_nbi": 32259, "tasa_hogares_nbi": 63.45, "personas": 182166, "personas_nbi": 125005, "tasa_personas_nbi": 68.62, "participacion_hogares_nbi": 1.68}, {"codigo": "08", "provincia": "Esmeraldas", "hogares": 166694, "hogares_nbi": 101320, "tasa_hogares_nbi": 60.78, "personas": 553900, "personas_nbi": 346609, "tasa_personas_nbi": 62.58, "participacion_hogares_nbi": 5.26}, {"codigo": "13", "provincia": "Manabi", "hogares": 484455, "hogares_nbi": 287836, "tasa_hogares_nbi": 59.41, "personas": 1592840, "personas_nbi": 955376, "tasa_personas_nbi": 59.98, "participacion_hogares_nbi": 14.95}, {"codigo": "12", "provincia": "Los Rios", "hogares": 282171, "hogares_nbi": 167086, "tasa_hogares_nbi": 59.21, "personas": 898652, "personas_nbi": 550670, "tasa_personas_nbi": 61.28, "participacion_hogares_nbi": 8.68}, {"codigo": "14", "provincia": "Morona Santiago", "hogares": 52453, "hogares_nbi": 30558, "tasa_hogares_nbi": 58.26, "personas": 192508, "personas_nbi": 125461, "tasa_personas_nbi": 65.17, "participacion_hogares_nbi": 1.59}, {"codigo": "02", "provincia": "Bolivar", "hogares": 63428, "hogares_nbi": 36179, "tasa_hogares_nbi": 57.04, "personas": 199078, "personas_nbi": 116266, "tasa_personas_nbi": 58.4, "participacion_hogares_nbi": 1.88}, {"codigo": "21", "provincia": "Sucumbios", "hogares": 59083, "hogares_nbi": 32695, "tasa_hogares_nbi": 55.34, "personas": 199014, "personas_nbi": 117250, "tasa_personas_nbi": 58.92, "participacion_hogares_nbi": 1.7}, {"codigo": "15", "provincia": "Napo", "hogares": 35615, "hogares_nbi": 19589, "tasa_hogares_nbi": 55.0, "personas": 131675, "personas_nbi": 80894, "tasa_personas_nbi": 61.43, "participacion_hogares_nbi": 1.02}, {"codigo": "05", "provincia": "Cotopaxi", "hogares": 139362, "hogares_nbi": 66618, "tasa_hogares_nbi": 47.8, "personas": 470210, "personas_nbi": 226102, "tasa_personas_nbi": 48.09, "participacion_hogares_nbi": 3.46}, {"codigo": "19", "provincia": "Zamora Chinchipe", "hogares": 32872, "hogares_nbi": 15449, "tasa_hogares_nbi": 47.0, "personas": 110973, "personas_nbi": 55335, "tasa_personas_nbi": 49.86, "participacion_hogares_nbi": 0.8}, {"codigo": "16", "provincia": "Pastaza", "hogares": 31383, "hogares_nbi": 14427, "tasa_hogares_nbi": 45.97, "personas": 111915, "personas_nbi": 59036, "tasa_personas_nbi": 52.75, "participacion_hogares_nbi": 0.75}, {"codigo": "24", "provincia": "Santa Elena", "hogares": 105932, "hogares_nbi": 46837, "tasa_hogares_nbi": 44.21, "personas": 385735, "personas_nbi": 182017, "tasa_personas_nbi": 47.19, "participacion_hogares_nbi": 2.43}, {"codigo": "23", "provincia": "Santo Domingo de los Tsachilas", "hogares": 153289, "hogares_nbi": 66536, "tasa_hogares_nbi": 43.41, "personas": 492969, "personas_nbi": 229493, "tasa_personas_nbi": 46.55, "participacion_hogares_nbi": 3.46}, {"codigo": "06", "provincia": "Chimborazo", "hogares": 149395, "hogares_nbi": 62846, "tasa_hogares_nbi": 42.07, "personas": 471933, "personas_nbi": 201201, "tasa_personas_nbi": 42.63, "participacion_hogares_nbi": 3.26}, {"codigo": "03", "provincia": "Canar", "hogares": 69671, "hogares_nbi": 26678, "tasa_hogares_nbi": 38.29, "personas": 227578, "personas_nbi": 88943, "tasa_personas_nbi": 39.08, "participacion_hogares_nbi": 1.39}, {"codigo": "11", "provincia": "Loja", "hogares": 148762, "hogares_nbi": 56526, "tasa_hogares_nbi": 38.0, "personas": 485421, "personas_nbi": 190433, "tasa_personas_nbi": 39.23, "participacion_hogares_nbi": 2.94}, {"codigo": "09", "provincia": "Guayas", "hogares": 1319163, "hogares_nbi": 467718, "tasa_hogares_nbi": 35.46, "personas": 4391923, "personas_nbi": 1711765, "tasa_personas_nbi": 38.98, "participacion_hogares_nbi": 24.3}, {"codigo": "07", "provincia": "El Oro", "hogares": 221627, "hogares_nbi": 75387, "tasa_hogares_nbi": 34.02, "personas": 714592, "personas_nbi": 260570, "tasa_personas_nbi": 36.46, "participacion_hogares_nbi": 3.92}, {"codigo": "04", "provincia": "Carchi", "hogares": 53716, "hogares_nbi": 17582, "tasa_hogares_nbi": 32.73, "personas": 172828, "personas_nbi": 57301, "tasa_personas_nbi": 33.15, "participacion_hogares_nbi": 0.91}, {"codigo": "18", "provincia": "Tungurahua", "hogares": 176227, "hogares_nbi": 55648, "tasa_hogares_nbi": 31.58, "personas": 563532, "personas_nbi": 177035, "tasa_personas_nbi": 31.42, "participacion_hogares_nbi": 2.89}, {"codigo": "10", "provincia": "Imbabura", "hogares": 141502, "hogares_nbi": 44026, "tasa_hogares_nbi": 31.11, "personas": 469879, "personas_nbi": 153025, "tasa_personas_nbi": 32.57, "participacion_hogares_nbi": 2.29}, {"codigo": "20", "provincia": "Galapagos", "hogares": 9718, "hogares_nbi": 2713, "tasa_hogares_nbi": 27.92, "personas": 28583, "personas_nbi": 8929, "tasa_personas_nbi": 31.24, "participacion_hogares_nbi": 0.14}, {"codigo": "01", "provincia": "Azuay", "hogares": 246867, "hogares_nbi": 60751, "tasa_hogares_nbi": 24.61, "personas": 801609, "personas_nbi": 205719, "tasa_personas_nbi": 25.66, "participacion_hogares_nbi": 3.16}, {"codigo": "17", "provincia": "Pichincha", "hogares": 994599, "hogares_nbi": 137877, "tasa_hogares_nbi": 13.86, "personas": 3089473, "personas_nbi": 489315, "tasa_personas_nbi": 15.84, "participacion_hogares_nbi": 7.16}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

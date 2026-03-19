@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.1.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-545ecec2c68aece41ebe1a3c51fe1bf0"}, "mark": {"type": "bar", "cornerRadiusTopLeft": 4, "cornerRadiusTopRight": 4}, "encoding": {"color": {"field": "area", "legend": null, "scale": {"range": ["#2563eb", "#f97316"]}, "type": "nominal"}, "column": {"field": "nivel", "title": null, "type": "nominal"}, "tooltip": [{"field": "nivel", "type": "nominal"}, {"field": "area", "type": "nominal"}, {"field": "universo", "format": ",", "title": "Universo", "type": "quantitative"}, {"field": "con_nbi", "format": ",", "title": "Con NBI", "type": "quantitative"}, {"field": "tasa_nbi", "format": ".2f", "title": "Tasa", "type": "quantitative"}], "x": {"field": "area", "title": "Area", "type": "nominal"}, "y": {"axis": {"labelExpr": "datum.value + '%'"}, "field": "tasa_nbi", "title": "Tasa de NBI (%)", "type": "quantitative"}}, "height": 320, "title": "Brecha urbano-rural del NBI", "width": 260, "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json", "datasets": {"data-545ecec2c68aece41ebe1a3c51fe1bf0": [{"area": "Urbana", "nivel": "Personas", "universo": 10687151, "con_nbi": 2885123, "tasa_nbi": 27.0}, {"area": "Rural", "nivel": "Personas", "universo": 6251835, "con_nbi": 3828627, "tasa_nbi": 61.24}, {"area": "Urbana", "nivel": "Hogares", "universo": 3299669, "con_nbi": 778774, "tasa_nbi": 23.6}, {"area": "Rural", "nivel": "Hogares", "universo": 1889158, "con_nbi": 1146367, "tasa_nbi": 60.68}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

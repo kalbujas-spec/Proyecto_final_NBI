@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.1.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-8071bd11f7354ede898c1feee462f708"}, "mark": {"type": "bar", "cornerRadiusTopLeft": 3, "cornerRadiusTopRight": 3}, "encoding": {"color": {"field": "componente", "scale": {"domain": ["Acceso a servicios basicos", "Hacinamiento", "Acceso a vivienda", "Capacidad economica", "Acceso a educacion basica"], "range": ["#0f766e", "#ea580c", "#7c3aed", "#2563eb", "#dc2626"]}, "title": "Componente", "type": "nominal"}, "tooltip": [{"field": "area", "title": "\u00c1rea", "type": "nominal"}, {"field": "componente", "title": "Componente", "type": "nominal"}, {"field": "hogares_afectados", "format": ",", "title": "Hogares afectados", "type": "quantitative"}, {"field": "pct_hogares_nbi", "format": ".2f", "title": "Participaci\u00f3n (%)", "type": "quantitative"}], "x": {"field": "area", "title": "\u00c1rea", "type": "nominal"}, "xOffset": {"field": "componente", "type": "nominal"}, "y": {"axis": {"labelExpr": "datum.value + '%'", "title": "Participaci\u00f3n dentro de hogares con NBI (%)"}, "field": "pct_hogares_nbi", "type": "quantitative"}}, "height": 360, "title": "Perfil de carencias del NBI seg\u00fan \u00e1rea", "width": 700, "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json", "datasets": {"data-8071bd11f7354ede898c1feee462f708": [{"area": "Urbana", "componente": "Capacidad economica", "hogares_afectados": 84323, "pct_total_hogares": 2.56, "pct_hogares_nbi": 10.83, "hogares": 3299669, "hogares_nbi": 778774}, {"area": "Urbana", "componente": "Acceso a educacion basica", "hogares_afectados": 53645, "pct_total_hogares": 1.63, "pct_hogares_nbi": 6.89, "hogares": 3299669, "hogares_nbi": 778774}, {"area": "Urbana", "componente": "Acceso a vivienda", "hogares_afectados": 130324, "pct_total_hogares": 3.95, "pct_hogares_nbi": 16.73, "hogares": 3299669, "hogares_nbi": 778774}, {"area": "Urbana", "componente": "Acceso a servicios basicos", "hogares_afectados": 477880, "pct_total_hogares": 14.48, "pct_hogares_nbi": 61.36, "hogares": 3299669, "hogares_nbi": 778774}, {"area": "Urbana", "componente": "Hacinamiento", "hogares_afectados": 268467, "pct_total_hogares": 8.14, "pct_hogares_nbi": 34.47, "hogares": 3299669, "hogares_nbi": 778774}, {"area": "Rural", "componente": "Capacidad economica", "hogares_afectados": 125721, "pct_total_hogares": 6.65, "pct_hogares_nbi": 10.97, "hogares": 1889158, "hogares_nbi": 1146367}, {"area": "Rural", "componente": "Acceso a educacion basica", "hogares_afectados": 23171, "pct_total_hogares": 1.23, "pct_hogares_nbi": 2.02, "hogares": 1889158, "hogares_nbi": 1146367}, {"area": "Rural", "componente": "Acceso a vivienda", "hogares_afectados": 248060, "pct_total_hogares": 13.13, "pct_hogares_nbi": 21.64, "hogares": 1889158, "hogares_nbi": 1146367}, {"area": "Rural", "componente": "Acceso a servicios basicos", "hogares_afectados": 1048025, "pct_total_hogares": 55.48, "pct_hogares_nbi": 91.42, "hogares": 1889158, "hogares_nbi": 1146367}, {"area": "Rural", "componente": "Hacinamiento", "hogares_afectados": 190016, "pct_total_hogares": 10.06, "pct_hogares_nbi": 16.58, "hogares": 1889158, "hogares_nbi": 1146367}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

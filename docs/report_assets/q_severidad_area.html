@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.1.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-73976aa44ab4380ead7fdd311788e94c"}, "mark": {"type": "bar", "cornerRadiusTopLeft": 4, "cornerRadiusTopRight": 4}, "encoding": {"color": {"field": "area", "scale": {"range": ["#2563eb", "#f97316"]}, "title": "\u00c1rea", "type": "nominal"}, "tooltip": [{"field": "area", "title": "\u00c1rea", "type": "nominal"}, {"field": "n_componentes", "title": "Carencias", "type": "ordinal"}, {"field": "hogares", "format": ",", "title": "Hogares", "type": "quantitative"}, {"field": "participacion", "format": ".2f", "title": "Participaci\u00f3n (%)", "type": "quantitative"}], "x": {"field": "n_componentes", "title": "N\u00famero de carencias activas", "type": "ordinal"}, "xOffset": {"field": "area", "type": "nominal"}, "y": {"axis": {"labelExpr": "datum.value + '%'", "title": "Participaci\u00f3n dentro de hogares con NBI (%)"}, "field": "participacion", "type": "quantitative"}}, "height": 360, "title": "Severidad del NBI por \u00e1rea", "width": 720, "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json", "datasets": {"data-73976aa44ab4380ead7fdd311788e94c": [{"area": "Urbana", "n_componentes": 1, "hogares": 585609, "participacion": 75.2}, {"area": "Urbana", "n_componentes": 2, "hogares": 153907, "participacion": 19.76}, {"area": "Urbana", "n_componentes": 3, "hogares": 35971, "participacion": 4.62}, {"area": "Urbana", "n_componentes": 4, "hogares": 3132, "participacion": 0.4}, {"area": "Urbana", "n_componentes": 5, "hogares": 155, "participacion": 0.02}, {"area": "Rural", "n_componentes": 1, "hogares": 751899, "participacion": 65.59}, {"area": "Rural", "n_componentes": 2, "hogares": 308486, "participacion": 26.91}, {"area": "Rural", "n_componentes": 3, "hogares": 78166, "participacion": 6.82}, {"area": "Rural", "n_componentes": 4, "hogares": 7456, "participacion": 0.65}, {"area": "Rural", "n_componentes": 5, "hogares": 360, "participacion": 0.03}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

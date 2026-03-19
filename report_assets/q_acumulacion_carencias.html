@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.1.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-a6e8a74d44b9f5527ade4eecad0e4f23"}, "mark": {"type": "bar", "color": "#b45309", "cornerRadiusTopLeft": 4, "cornerRadiusTopRight": 4}, "encoding": {"tooltip": [{"field": "n_componentes", "title": "Componentes", "type": "ordinal"}, {"field": "hogares", "format": ",", "title": "Hogares", "type": "quantitative"}, {"field": "participacion", "format": ".2f", "title": "Participaci\u00f3n (%)", "type": "quantitative"}], "x": {"field": "n_componentes", "title": "N\u00famero de componentes activos", "type": "ordinal"}, "y": {"axis": {"labelExpr": "datum.value + '%'", "title": "Participaci\u00f3n dentro de hogares con NBI (%)"}, "field": "participacion", "type": "quantitative"}}, "height": 320, "title": "Acumulaci\u00f3n de carencias por hogar", "width": 700, "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json", "datasets": {"data-a6e8a74d44b9f5527ade4eecad0e4f23": [{"n_componentes": 1, "hogares": 1337508, "participacion": 69.48}, {"n_componentes": 2, "hogares": 462393, "participacion": 24.02}, {"n_componentes": 3, "hogares": 114137, "participacion": 5.93}, {"n_componentes": 4, "hogares": 10588, "participacion": 0.55}, {"n_componentes": 5, "hogares": 515, "participacion": 0.03}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

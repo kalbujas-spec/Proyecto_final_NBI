@@ -1,0 +1,11 @@
+area,componente,hogares_afectados,pct_total_hogares,pct_hogares_nbi,hogares,hogares_nbi
+Urbana,Capacidad economica,84323,2.56,10.83,3299669,778774
+Urbana,Acceso a educacion basica,53645,1.63,6.89,3299669,778774
+Urbana,Acceso a vivienda,130324,3.95,16.73,3299669,778774
+Urbana,Acceso a servicios basicos,477880,14.48,61.36,3299669,778774
+Urbana,Hacinamiento,268467,8.14,34.47,3299669,778774
+Rural,Capacidad economica,125721,6.65,10.97,1889158,1146367
+Rural,Acceso a educacion basica,23171,1.23,2.02,1889158,1146367
+Rural,Acceso a vivienda,248060,13.13,21.64,1889158,1146367
+Rural,Acceso a servicios basicos,1048025,55.48,91.42,1889158,1146367
+Rural,Hacinamiento,190016,10.06,16.58,1889158,1146367

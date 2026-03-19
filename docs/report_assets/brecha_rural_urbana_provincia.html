@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.1.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-c690304f123152077f17bb3a216740b1"}, "mark": {"type": "bar", "color": "#1d4ed8", "cornerRadiusEnd": 4}, "encoding": {"tooltip": [{"field": "provincia", "type": "nominal"}, {"field": "Rural", "format": ".2f", "title": "Rural", "type": "quantitative"}, {"field": "Urbana", "format": ".2f", "title": "Urbana", "type": "quantitative"}, {"field": "gap_rural_urbana", "format": ".2f", "title": "Brecha", "type": "quantitative"}], "x": {"axis": {"labelExpr": "datum.value + ' pp'"}, "field": "gap_rural_urbana", "title": "Brecha rural - urbana (pp)", "type": "quantitative"}, "y": {"field": "provincia", "sort": "-x", "title": "Provincia", "type": "nominal"}}, "height": 520, "title": "Brecha rural-urbana del NBI por provincia", "width": 700, "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json", "datasets": {"data-c690304f123152077f17bb3a216740b1": [{"provincia": "Azuay", "Rural": 42.41, "Urbana": 9.52, "gap_rural_urbana": 32.89}, {"provincia": "Bolivar", "Rural": 76.2, "Urbana": 18.22, "gap_rural_urbana": 57.980000000000004}, {"provincia": "Canar", "Rural": 51.69, "Urbana": 21.33, "gap_rural_urbana": 30.36}, {"provincia": "Carchi", "Rural": 51.78, "Urbana": 14.36, "gap_rural_urbana": 37.42}, {"provincia": "Chimborazo", "Rural": 71.32, "Urbana": 10.96, "gap_rural_urbana": 60.35999999999999}, {"provincia": "Cotopaxi", "Rural": 62.87, "Urbana": 19.69, "gap_rural_urbana": 43.17999999999999}, {"provincia": "El Oro", "Rural": 56.64, "Urbana": 27.78, "gap_rural_urbana": 28.86}, {"provincia": "Esmeraldas", "Rural": 80.8, "Urbana": 36.01, "gap_rural_urbana": 44.79}, {"provincia": "Galapagos", "Rural": 65.43, "Urbana": 18.92, "gap_rural_urbana": 46.510000000000005}, {"provincia": "Guayas", "Rural": 78.38, "Urbana": 27.64, "gap_rural_urbana": 50.739999999999995}, {"provincia": "Imbabura", "Rural": 52.59, "Urbana": 12.85, "gap_rural_urbana": 39.74}, {"provincia": "Loja", "Rural": 69.6, "Urbana": 16.51, "gap_rural_urbana": 53.08999999999999}, {"provincia": "Los Rios", "Rural": 82.04, "Urbana": 39.25, "gap_rural_urbana": 42.790000000000006}, {"provincia": "Manabi", "Rural": 87.73, "Urbana": 38.18, "gap_rural_urbana": 49.550000000000004}, {"provincia": "Morona Santiago", "Rural": 80.88, "Urbana": 21.95, "gap_rural_urbana": 58.92999999999999}, {"provincia": "Napo", "Rural": 76.64, "Urbana": 22.37, "gap_rural_urbana": 54.269999999999996}, {"provincia": "Orellana", "Rural": 86.3, "Urbana": 35.23, "gap_rural_urbana": 51.07}, {"provincia": "Pastaza", "Rural": 62.96, "Urbana": 19.28, "gap_rural_urbana": 43.68}, {"provincia": "Pichincha", "Rural": 21.39, "Urbana": 9.81, "gap_rural_urbana": 11.58}, {"provincia": "Santa Elena", "Rural": 51.3, "Urbana": 37.86, "gap_rural_urbana": 13.439999999999998}, {"provincia": "Santo Domingo de los Tsachilas", "Rural": 77.88, "Urbana": 32.11, "gap_rural_urbana": 45.769999999999996}, {"provincia": "Sucumbios", "Rural": 72.74, "Urbana": 33.14, "gap_rural_urbana": 39.599999999999994}, {"provincia": "Tungurahua", "Rural": 45.9, "Urbana": 11.11, "gap_rural_urbana": 34.79}, {"provincia": "Zamora Chinchipe", "Rural": 69.19, "Urbana": 23.48, "gap_rural_urbana": 45.709999999999994}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

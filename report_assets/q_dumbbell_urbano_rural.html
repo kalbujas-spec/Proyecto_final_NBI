@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    #vis.vega-embed {
+      width: 100%;
+      display: flex;
+    }
+
+    #vis.vega-embed details,
+    #vis.vega-embed details summary {
+      position: relative;
+    }
+  </style>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-lite@6.1.0"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+</head>
+<body>
+  <div id="vis"></div>
+  <script>
+    (function(vegaEmbed) {
+      var spec = {"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "layer": [{"mark": {"type": "rule", "color": "#94a3b8", "strokeWidth": 2}, "encoding": {"tooltip": [{"field": "provincia", "title": "Provincia", "type": "nominal"}, {"field": "urbana", "format": ".2f", "title": "Urbana (%)", "type": "quantitative"}, {"field": "rural", "format": ".2f", "title": "Rural (%)", "type": "quantitative"}, {"field": "gap", "format": ".2f", "title": "Brecha (pp)", "type": "quantitative"}], "x": {"field": "urbana", "type": "quantitative"}, "x2": {"field": "rural"}, "y": {"field": "provincia", "sort": ["Chimborazo", "Morona Santiago", "Bolivar", "Napo", "Loja", "Orellana", "Guayas", "Manabi", "Galapagos", "Santo Domingo de los Tsachilas", "Zamora Chinchipe", "Esmeraldas", "Pastaza", "Cotopaxi", "Los Rios", "Imbabura", "Sucumbios", "Carchi", "Tungurahua", "Azuay", "Canar", "El Oro", "Santa Elena", "Pichincha"], "title": "Provincia", "type": "nominal"}}}, {"mark": {"type": "circle", "color": "#2563eb", "size": 75}, "encoding": {"x": {"axis": {"labelExpr": "datum.value + '%'", "title": "Tasa de hogares con NBI (%)"}, "field": "urbana", "type": "quantitative"}, "y": {"field": "provincia", "sort": ["Chimborazo", "Morona Santiago", "Bolivar", "Napo", "Loja", "Orellana", "Guayas", "Manabi", "Galapagos", "Santo Domingo de los Tsachilas", "Zamora Chinchipe", "Esmeraldas", "Pastaza", "Cotopaxi", "Los Rios", "Imbabura", "Sucumbios", "Carchi", "Tungurahua", "Azuay", "Canar", "El Oro", "Santa Elena", "Pichincha"], "title": "Provincia", "type": "nominal"}}}, {"mark": {"type": "circle", "color": "#f97316", "size": 75}, "encoding": {"x": {"field": "rural", "type": "quantitative"}, "y": {"field": "provincia", "sort": ["Chimborazo", "Morona Santiago", "Bolivar", "Napo", "Loja", "Orellana", "Guayas", "Manabi", "Galapagos", "Santo Domingo de los Tsachilas", "Zamora Chinchipe", "Esmeraldas", "Pastaza", "Cotopaxi", "Los Rios", "Imbabura", "Sucumbios", "Carchi", "Tungurahua", "Azuay", "Canar", "El Oro", "Santa Elena", "Pichincha"], "title": "Provincia", "type": "nominal"}}}], "data": {"name": "data-f3a8634d8964e0cde3d81be5bf568c31"}, "height": 560, "title": "Brecha urbano-rural del NBI por provincia", "width": 720, "$schema": "https://vega.github.io/schema/vega-lite/v6.1.0.json", "datasets": {"data-f3a8634d8964e0cde3d81be5bf568c31": [{"provincia": "Chimborazo", "rural": 71.32, "urbana": 10.96, "gap": 60.35999999999999}, {"provincia": "Morona Santiago", "rural": 80.88, "urbana": 21.95, "gap": 58.92999999999999}, {"provincia": "Bolivar", "rural": 76.2, "urbana": 18.22, "gap": 57.980000000000004}, {"provincia": "Napo", "rural": 76.64, "urbana": 22.37, "gap": 54.269999999999996}, {"provincia": "Loja", "rural": 69.6, "urbana": 16.51, "gap": 53.08999999999999}, {"provincia": "Orellana", "rural": 86.3, "urbana": 35.23, "gap": 51.07}, {"provincia": "Guayas", "rural": 78.38, "urbana": 27.64, "gap": 50.739999999999995}, {"provincia": "Manabi", "rural": 87.73, "urbana": 38.18, "gap": 49.550000000000004}, {"provincia": "Galapagos", "rural": 65.43, "urbana": 18.92, "gap": 46.510000000000005}, {"provincia": "Santo Domingo de los Tsachilas", "rural": 77.88, "urbana": 32.11, "gap": 45.769999999999996}, {"provincia": "Zamora Chinchipe", "rural": 69.19, "urbana": 23.48, "gap": 45.709999999999994}, {"provincia": "Esmeraldas", "rural": 80.8, "urbana": 36.01, "gap": 44.79}, {"provincia": "Pastaza", "rural": 62.96, "urbana": 19.28, "gap": 43.68}, {"provincia": "Cotopaxi", "rural": 62.87, "urbana": 19.69, "gap": 43.17999999999999}, {"provincia": "Los Rios", "rural": 82.04, "urbana": 39.25, "gap": 42.790000000000006}, {"provincia": "Imbabura", "rural": 52.59, "urbana": 12.85, "gap": 39.74}, {"provincia": "Sucumbios", "rural": 72.74, "urbana": 33.14, "gap": 39.599999999999994}, {"provincia": "Carchi", "rural": 51.78, "urbana": 14.36, "gap": 37.42}, {"provincia": "Tungurahua", "rural": 45.9, "urbana": 11.11, "gap": 34.79}, {"provincia": "Azuay", "rural": 42.41, "urbana": 9.52, "gap": 32.89}, {"provincia": "Canar", "rural": 51.69, "urbana": 21.33, "gap": 30.36}, {"provincia": "El Oro", "rural": 56.64, "urbana": 27.78, "gap": 28.86}, {"provincia": "Santa Elena", "rural": 51.3, "urbana": 37.86, "gap": 13.439999999999998}, {"provincia": "Pichincha", "rural": 21.39, "urbana": 9.81, "gap": 11.58}]}};
+      var embedOpt = {"mode": "vega-lite"};
+
+      function showError(el, error){
+          el.innerHTML = ('<div style="color:red;">'
+                          + '<p>JavaScript Error: ' + error.message + '</p>'
+                          + "<p>This usually means there's a typo in your chart specification. "
+                          + "See the javascript console for the full traceback.</p>"
+                          + '</div>');
+          throw error;
+      }
+      const el = document.getElementById('vis');
+      vegaEmbed("#vis", spec, embedOpt)
+        .catch(error => showError(el, error));
+    })(vegaEmbed);
+
+  </script>
+</body>
+</html>

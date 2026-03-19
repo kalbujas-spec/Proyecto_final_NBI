@@ -1,0 +1,49 @@
+codigo,provincia,area,hogares,hogares_nbi,tasa_hogares_nbi
+01,Azuay,Urbana,133632,12724,9.52
+01,Azuay,Rural,113235,48027,42.41
+02,Bolivar,Urbana,20958,3818,18.22
+02,Bolivar,Rural,42470,32361,76.2
+03,Canar,Urbana,30753,6561,21.33
+03,Canar,Rural,38918,20117,51.69
+04,Carchi,Urbana,27347,3927,14.36
+04,Carchi,Rural,26369,13655,51.78
+05,Cotopaxi,Urbana,48637,9576,19.69
+05,Cotopaxi,Rural,90725,57042,62.87
+06,Chimborazo,Urbana,72401,7937,10.96
+06,Chimborazo,Rural,76994,54909,71.32
+07,El Oro,Urbana,173755,48273,27.78
+07,El Oro,Rural,47872,27114,56.64
+08,Esmeraldas,Urbana,74512,26835,36.01
+08,Esmeraldas,Rural,92182,74485,80.8
+09,Guayas,Urbana,1115920,308420,27.64
+09,Guayas,Rural,203243,159298,78.38
+10,Imbabura,Urbana,76477,9827,12.85
+10,Imbabura,Rural,65025,34199,52.59
+11,Loja,Urbana,88557,14622,16.51
+11,Loja,Rural,60205,41904,69.6
+12,Los Rios,Urbana,150528,59080,39.25
+12,Los Rios,Rural,131643,108006,82.04
+13,Manabi,Urbana,276834,105694,38.18
+13,Manabi,Rural,207621,182142,87.73
+14,Morona Santiago,Urbana,20137,4421,21.95
+14,Morona Santiago,Rural,32316,26137,80.88
+15,Napo,Urbana,14200,3177,22.37
+15,Napo,Rural,21415,16412,76.64
+16,Pastaza,Urbana,12207,2354,19.28
+16,Pastaza,Rural,19176,12073,62.96
+17,Pichincha,Urbana,646444,63394,9.81
+17,Pichincha,Rural,348155,74483,21.39
+18,Tungurahua,Urbana,72542,8057,11.11
+18,Tungurahua,Rural,103685,47591,45.9
+19,Zamora Chinchipe,Urbana,15958,3747,23.48
+19,Zamora Chinchipe,Rural,16914,11702,69.19
+20,Galapagos,Urbana,7838,1483,18.92
+20,Galapagos,Rural,1880,1230,65.43
+21,Sucumbios,Urbana,25968,8606,33.14
+21,Sucumbios,Rural,33115,24089,72.74
+22,Orellana,Urbana,22753,8017,35.23
+22,Orellana,Rural,28090,24242,86.3
+23,Santo Domingo de los Tsachilas,Urbana,115474,37084,32.11
+23,Santo Domingo de los Tsachilas,Rural,37815,29452,77.88
+24,Santa Elena,Urbana,55837,21140,37.86
+24,Santa Elena,Rural,50095,25697,51.3

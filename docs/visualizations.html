@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Análisis de NBI con Altair – NBI en Ecuador</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-e31584831b205ffbb2d98406f31c2a5b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">NBI en Ecuador</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Inicio</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./data_cleaning.html"> 
+<span class="menu-text">Preparación y exploración de datos</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./visualizations.html" aria-current="page"> 
+<span class="menu-text">Análisis y Visualizaciones</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#resumen-ejecutivo" id="toc-resumen-ejecutivo" class="nav-link active" data-scroll-target="#resumen-ejecutivo">Resumen ejecutivo</a></li>
+  <li><a href="#cobertura-general" id="toc-cobertura-general" class="nav-link" data-scroll-target="#cobertura-general">Cobertura general</a></li>
+  <li><a href="#desigualdad-territorial" id="toc-desigualdad-territorial" class="nav-link" data-scroll-target="#desigualdad-territorial">Desigualdad territorial</a>
+  <ul class="collapse">
+  <li><a href="#provincias-con-mayor-incidencia" id="toc-provincias-con-mayor-incidencia" class="nav-link" data-scroll-target="#provincias-con-mayor-incidencia">Provincias con mayor incidencia</a></li>
+  <li><a href="#provincias-con-más-hogares-afectados" id="toc-provincias-con-más-hogares-afectados" class="nav-link" data-scroll-target="#provincias-con-más-hogares-afectados">Provincias con más hogares afectados</a></li>
+  </ul></li>
+  <li><a href="#cuatro-lecturas-nuevas-del-nbi" id="toc-cuatro-lecturas-nuevas-del-nbi" class="nav-link" data-scroll-target="#cuatro-lecturas-nuevas-del-nbi">Cuatro lecturas nuevas del NBI</a>
+  <ul class="collapse">
+  <li><a href="#mapa-provincial-del-nbi" id="toc-mapa-provincial-del-nbi" class="nav-link" data-scroll-target="#mapa-provincial-del-nbi">1. Mapa provincial del NBI</a></li>
+  <li><a href="#dumbbell-urbano-rural-por-provincia" id="toc-dumbbell-urbano-rural-por-provincia" class="nav-link" data-scroll-target="#dumbbell-urbano-rural-por-provincia">2. Dumbbell urbano-rural por provincia</a></li>
+  <li><a href="#desviación-provincial-respecto-al-promedio-nacional" id="toc-desviación-provincial-respecto-al-promedio-nacional" class="nav-link" data-scroll-target="#desviación-provincial-respecto-al-promedio-nacional">3. Desviación provincial respecto al promedio nacional</a></li>
+  <li><a href="#severidad-del-nbi-por-área" id="toc-severidad-del-nbi-por-área" class="nav-link" data-scroll-target="#severidad-del-nbi-por-área">4. Severidad del NBI por área</a></li>
+  </ul></li>
+  <li><a href="#nbi-y-territorio" id="toc-nbi-y-territorio" class="nav-link" data-scroll-target="#nbi-y-territorio">NBI y territorio</a></li>
+  <li><a href="#qué-carencias-pesan-más-según-provincia" id="toc-qué-carencias-pesan-más-según-provincia" class="nav-link" data-scroll-target="#qué-carencias-pesan-más-según-provincia">Qué carencias pesan más según provincia</a></li>
+  <li><a href="#perfil-de-carencias" id="toc-perfil-de-carencias" class="nav-link" data-scroll-target="#perfil-de-carencias">Perfil de carencias</a></li>
+  <li><a href="#conclusiones" id="toc-conclusiones" class="nav-link" data-scroll-target="#conclusiones">Conclusiones</a></li>
+  <li><a href="#lectura-para-política-pública" id="toc-lectura-para-política-pública" class="nav-link" data-scroll-target="#lectura-para-política-pública">Lectura para política pública</a>
+  <ul class="collapse">
+  <li><a href="#acceso-a-servicios-básicos" id="toc-acceso-a-servicios-básicos" class="nav-link" data-scroll-target="#acceso-a-servicios-básicos">1. Acceso a servicios básicos</a></li>
+  <li><a href="#acceso-a-vivienda" id="toc-acceso-a-vivienda" class="nav-link" data-scroll-target="#acceso-a-vivienda">2. Acceso a vivienda</a></li>
+  <li><a href="#hacinamiento" id="toc-hacinamiento" class="nav-link" data-scroll-target="#hacinamiento">3. Hacinamiento</a></li>
+  <li><a href="#capacidad-económica" id="toc-capacidad-económica" class="nav-link" data-scroll-target="#capacidad-económica">4. Capacidad económica</a></li>
+  <li><a href="#acceso-a-educación-básica" id="toc-acceso-a-educación-básica" class="nav-link" data-scroll-target="#acceso-a-educación-básica">5. Acceso a educación básica</a></li>
+  <li><a href="#priorización-territorial" id="toc-priorización-territorial" class="nav-link" data-scroll-target="#priorización-territorial">6. Priorización territorial</a></li>
+  <li><a href="#hogares-con-múltiples-carencias" id="toc-hogares-con-múltiples-carencias" class="nav-link" data-scroll-target="#hogares-con-múltiples-carencias">7. Hogares con múltiples carencias</a></li>
+  </ul></li>
+  <li><a href="#nota-metodológica" id="toc-nota-metodológica" class="nav-link" data-scroll-target="#nota-metodológica">Nota metodológica</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Análisis de NBI con Altair</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="resumen-ejecutivo" class="level2">
+<h2 data-anchor-id="resumen-ejecutivo">Resumen ejecutivo</h2>
+<ul>
+<li>El NBI alcanza al <strong>39.63% de las personas</strong> y al <strong>37.10% de los hogares</strong>.</li>
+<li>La brecha territorial domina el análisis: en hogares, el NBI es de <strong>60.68% en área rural</strong>, frente a <strong>23.60% en área urbana</strong>.</li>
+<li>La provincia con mayor incidencia es <strong>Orellana (63.45%)</strong>, y la de menor incidencia es <strong>Pichincha (13.86%)</strong>.</li>
+<li>En volumen absoluto, <strong>Guayas</strong> concentra la mayor cantidad de hogares con NBI (<strong>467,718</strong>), seguida por <strong>Manabí</strong> (<strong>287,836</strong>).</li>
+<li>Entre los hogares con NBI, la privación más extendida es el <strong>acceso a servicios básicos</strong>, presente en <strong>79.26%</strong> de esos hogares.</li>
+<li>El <strong>69.48%</strong> de los hogares con NBI presenta una sola carencia y el <strong>30.52%</strong> acumula dos o más.</li>
+</ul>
+</section>
+<section id="cobertura-general" class="level2">
+<h2 data-anchor-id="cobertura-general">Cobertura general</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Nivel</th>
+<th style="text-align: right;">Universo</th>
+<th style="text-align: right;">Con NBI</th>
+<th style="text-align: right;">Tasa NBI (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Personas</td>
+<td style="text-align: right;">16,938,986</td>
+<td style="text-align: right;">6,713,750</td>
+<td style="text-align: right;">39.63%</td>
+</tr>
+<tr class="even">
+<td>Hogares (P01 == 1)</td>
+<td style="text-align: right;">5,188,827</td>
+<td style="text-align: right;">1,925,141</td>
+<td style="text-align: right;">37.10%</td>
+</tr>
+</tbody>
+</table>
+<iframe src="report_assets/brecha_urbano_rural.html" width="100%" height="470" style="border:none;">
+</iframe>
+<p>La diferencia entre área urbana y rural es el patrón más robusto del archivo. El promedio nacional es útil como contexto, pero, por sí solo, esconde una fractura espacial muy marcada.</p>
+</section>
+<section id="desigualdad-territorial" class="level2">
+<h2 data-anchor-id="desigualdad-territorial">Desigualdad territorial</h2>
+<iframe src="report_assets/incidencia_provincia.html" width="100%" height="720" style="border:none;">
+</iframe>
+<iframe src="report_assets/incidencia_vs_volumen.html" width="100%" height="560" style="border:none;">
+</iframe>
+<p>Hay dos lecturas complementarias. La primera es la <strong>incidencia</strong>, donde sobresalen Orellana, Esmeraldas, Manabí y Los Ríos. La segunda es la <strong>masa de hogares afectados</strong>, donde Guayas y Manabí pesan más por su tamaño poblacional.</p>
+<section id="provincias-con-mayor-incidencia" class="level3">
+<h3 data-anchor-id="provincias-con-mayor-incidencia">Provincias con mayor incidencia</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Provincia</th>
+<th style="text-align: right;">Hogares</th>
+<th style="text-align: right;">Hogares con NBI</th>
+<th style="text-align: right;">Tasa hogares NBI (%)</th>
+<th style="text-align: right;">Participación del total NBI (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Orellana</td>
+<td style="text-align: right;">50,843</td>
+<td style="text-align: right;">32,259</td>
+<td style="text-align: right;">63.45%</td>
+<td style="text-align: right;">1.68%</td>
+</tr>
+<tr class="even">
+<td>Esmeraldas</td>
+<td style="text-align: right;">166,694</td>
+<td style="text-align: right;">101,320</td>
+<td style="text-align: right;">60.78%</td>
+<td style="text-align: right;">5.26%</td>
+</tr>
+<tr class="odd">
+<td>Manabí</td>
+<td style="text-align: right;">484,455</td>
+<td style="text-align: right;">287,836</td>
+<td style="text-align: right;">59.41%</td>
+<td style="text-align: right;">14.95%</td>
+</tr>
+<tr class="even">
+<td>Los Ríos</td>
+<td style="text-align: right;">282,171</td>
+<td style="text-align: right;">167,086</td>
+<td style="text-align: right;">59.21%</td>
+<td style="text-align: right;">8.68%</td>
+</tr>
+<tr class="odd">
+<td>Morona Santiago</td>
+<td style="text-align: right;">52,453</td>
+<td style="text-align: right;">30,558</td>
+<td style="text-align: right;">58.26%</td>
+<td style="text-align: right;">1.59%</td>
+</tr>
+<tr class="even">
+<td>Bolívar</td>
+<td style="text-align: right;">63,428</td>
+<td style="text-align: right;">36,179</td>
+<td style="text-align: right;">57.04%</td>
+<td style="text-align: right;">1.88%</td>
+</tr>
+<tr class="odd">
+<td>Sucumbíos</td>
+<td style="text-align: right;">59,083</td>
+<td style="text-align: right;">32,695</td>
+<td style="text-align: right;">55.34%</td>
+<td style="text-align: right;">1.70%</td>
+</tr>
+<tr class="even">
+<td>Napo</td>
+<td style="text-align: right;">35,615</td>
+<td style="text-align: right;">19,589</td>
+<td style="text-align: right;">55.00%</td>
+<td style="text-align: right;">1.02%</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="provincias-con-más-hogares-afectados" class="level3">
+<h3 data-anchor-id="provincias-con-más-hogares-afectados">Provincias con más hogares afectados</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 26%">
+<col style="width: 26%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Provincia</th>
+<th style="text-align: right;">Hogares con NBI</th>
+<th style="text-align: right;">Participación del total NBI (%)</th>
+<th style="text-align: right;">Tasa hogares NBI (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Guayas</td>
+<td style="text-align: right;">467,718</td>
+<td style="text-align: right;">24.30%</td>
+<td style="text-align: right;">35.46%</td>
+</tr>
+<tr class="even">
+<td>Manabí</td>
+<td style="text-align: right;">287,836</td>
+<td style="text-align: right;">14.95%</td>
+<td style="text-align: right;">59.41%</td>
+</tr>
+<tr class="odd">
+<td>Los Ríos</td>
+<td style="text-align: right;">167,086</td>
+<td style="text-align: right;">8.68%</td>
+<td style="text-align: right;">59.21%</td>
+</tr>
+<tr class="even">
+<td>Pichincha</td>
+<td style="text-align: right;">137,877</td>
+<td style="text-align: right;">7.16%</td>
+<td style="text-align: right;">13.86%</td>
+</tr>
+<tr class="odd">
+<td>Esmeraldas</td>
+<td style="text-align: right;">101,320</td>
+<td style="text-align: right;">5.26%</td>
+<td style="text-align: right;">60.78%</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cuatro-lecturas-nuevas-del-nbi" class="level2">
+<h2 data-anchor-id="cuatro-lecturas-nuevas-del-nbi">Cuatro lecturas nuevas del NBI</h2>
+<section id="mapa-provincial-del-nbi" class="level3">
+<h3 data-anchor-id="mapa-provincial-del-nbi">1. Mapa provincial del NBI</h3>
+<iframe src="report_assets/mapa_nbi_provincia.html" width="100%" height="760" style="border:none;">
+</iframe>
+<p>El mapa vuelve mucho más evidente la geografía del NBI. La mayor intensidad se concentra en la Amazonía y en parte de la Costa, mientras que la Sierra centro-norte y, sobre todo, <strong>Pichincha</strong>, aparecen con menores niveles relativos. La utilidad de este gráfico es territorial: muestra que el NBI no está distribuido de forma homogénea y que la política pública debe pensar en corredores de rezago, no solo en provincias aisladas.</p>
+</section>
+<section id="dumbbell-urbano-rural-por-provincia" class="level3">
+<h3 data-anchor-id="dumbbell-urbano-rural-por-provincia">2. Dumbbell urbano-rural por provincia</h3>
+<iframe src="report_assets/dumbbell_urbano_rural.html" width="100%" height="700" style="border:none;">
+</iframe>
+<p>Este gráfico mejora la lectura de la brecha territorial porque deja ver, simultáneamente, el nivel urbano, el nivel rural y la distancia entre ambos. La conclusión fuerte es que casi todas las provincias tienen un salto importante entre sus dos espacios, pero la magnitud de esa brecha cambia mucho. <strong>Chimborazo, Morona Santiago, Bolívar, Napo y Loja</strong> muestran contrastes especialmente severos, lo que sugiere una desigualdad interna muy marcada dentro de una misma provincia.</p>
+</section>
+<section id="desviación-provincial-respecto-al-promedio-nacional" class="level3">
+<h3 data-anchor-id="desviación-provincial-respecto-al-promedio-nacional">3. Desviación provincial respecto al promedio nacional</h3>
+<iframe src="report_assets/heatmap_desviacion_componentes.html" width="100%" height="760" style="border:none;">
+</iframe>
+<p>Este heatmap no muestra el valor bruto de cada componente, sino cuánto se aleja cada provincia del promedio nacional. Eso permite encontrar perfiles realmente atípicos:</p>
+<ul>
+<li><strong>Santa Elena</strong> sobresale muy por encima del promedio en <strong>acceso a vivienda</strong> y <strong>hacinamiento</strong>.</li>
+<li><strong>Loja</strong> y <strong>Chimborazo</strong> también destacan por un peso inusualmente alto de <strong>acceso a vivienda</strong>.</li>
+<li><strong>Orellana, Bolívar, Morona Santiago, Napo y Pastaza</strong> se despegan del promedio por la enorme centralidad del <strong>acceso a servicios básicos</strong>.</li>
+<li>En cambio, <strong>Pichincha</strong> queda muy por debajo del promedio en <strong>acceso a servicios básicos</strong>, lo que confirma que su perfil de NBI es distinto al de las provincias con mayor rezago estructural.</li>
+</ul>
+</section>
+<section id="severidad-del-nbi-por-área" class="level3">
+<h3 data-anchor-id="severidad-del-nbi-por-área">4. Severidad del NBI por área</h3>
+<iframe src="report_assets/severidad_area.html" width="100%" height="500" style="border:none;">
+</iframe>
+<p>La severidad cambia entre área urbana y rural. En urbano, el <strong>75.20%</strong> de los hogares con NBI tiene una sola carencia; en rural, esa proporción baja a <strong>65.59%</strong>. En sentido contrario, la acumulación de <strong>dos o más carencias</strong> sube de <strong>24.80%</strong> en urbano a <strong>34.41%</strong> en rural. Esto importa porque no toda incidencia tiene la misma profundidad: la ruralidad no solo tiene más NBI, sino también un NBI más complejo y acumulado.</p>
+</section>
+</section>
+<section id="nbi-y-territorio" class="level2">
+<h2 data-anchor-id="nbi-y-territorio">NBI y territorio</h2>
+<iframe src="report_assets/componentes_por_area.html" width="100%" height="500" style="border:none;">
+</iframe>
+<iframe src="report_assets/brecha_rural_urbana_provincia.html" width="100%" height="700" style="border:none;">
+</iframe>
+<p>El perfil del NBI cambia bastante entre zonas urbanas y rurales:</p>
+<ul>
+<li>En área <strong>rural</strong>, la carencia de <strong>acceso a servicios básicos</strong> aparece en <strong>91.42%</strong> de los hogares con NBI.</li>
+<li>En área <strong>urbana</strong>, aunque los servicios básicos siguen liderando, gana mucho más peso relativo el <strong>hacinamiento</strong> (<strong>34.47%</strong>) y el rezago en <strong>acceso a educación básica</strong> (<strong>6.89%</strong>).</li>
+<li>La <strong>brecha rural-urbana</strong> no es uniforme. Provincias como <strong>Chimborazo, Morona Santiago, Bolívar, Napo y Loja</strong> muestran diferencias especialmente grandes entre sus zonas rurales y urbanas.</li>
+</ul>
+</section>
+<section id="qué-carencias-pesan-más-según-provincia" class="level2">
+<h2 data-anchor-id="qué-carencias-pesan-más-según-provincia">Qué carencias pesan más según provincia</h2>
+<iframe src="report_assets/heatmap_componentes_provincia.html" width="100%" height="760" style="border:none;">
+</iframe>
+<iframe src="report_assets/componentes_top_provincias.html" width="100%" height="460" style="border:none;">
+</iframe>
+<p>La mezcla provincial del NBI no es idéntica:</p>
+<ul>
+<li><strong>Acceso a servicios básicos</strong> domina en todas las provincias, pero es particularmente extremo en <strong>Orellana (92.90%)</strong>, <strong>Bolívar (92.84%)</strong> y <strong>Morona Santiago (92.79%)</strong> dentro de los hogares con NBI.</li>
+<li><strong>Hacinamiento</strong> pesa mucho más en <strong>Santa Elena (39.84%)</strong> y <strong>Guayas (34.37%)</strong> que en la mayoría del país.</li>
+<li>El componente de <strong>acceso a vivienda</strong> destaca en <strong>Santa Elena (39.49%)</strong>, <strong>Loja (35.68%)</strong> y <strong>Chimborazo (31.17%)</strong>.</li>
+<li>La <strong>capacidad económica</strong> gana más peso relativo en <strong>Imbabura (19.37%)</strong> y <strong>Cañar (18.74%)</strong>.</li>
+<li>La carencia de <strong>acceso a educación básica</strong> es baja en términos generales, pero resalta más en <strong>Pichincha (8.97%)</strong> y <strong>Guayas (6.50%)</strong> que en el resto.</li>
+</ul>
+</section>
+<section id="perfil-de-carencias" class="level2">
+<h2 data-anchor-id="perfil-de-carencias">Perfil de carencias</h2>
+<iframe src="report_assets/componentes_frecuencia.html" width="100%" height="420" style="border:none;">
+</iframe>
+<iframe src="report_assets/acumulacion_carencias.html" width="100%" height="460" style="border:none;">
+</iframe>
+<p>El perfil de carencias no está repartido de manera uniforme. <strong>Acceso a servicios básicos</strong> domina claramente y una fracción importante de hogares acumula varias privaciones al mismo tiempo, lo que sugiere vulnerabilidad estructural y no solo casos aislados.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Componente</th>
+<th style="text-align: right;">Hogares afectados</th>
+<th style="text-align: right;">Participación en hogares con NBI (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Acceso a servicios básicos</td>
+<td style="text-align: right;">1,525,905</td>
+<td style="text-align: right;">79.26%</td>
+</tr>
+<tr class="even">
+<td>Hacinamiento</td>
+<td style="text-align: right;">458,483</td>
+<td style="text-align: right;">23.82%</td>
+</tr>
+<tr class="odd">
+<td>Acceso a vivienda</td>
+<td style="text-align: right;">378,384</td>
+<td style="text-align: right;">19.65%</td>
+</tr>
+<tr class="even">
+<td>Capacidad económica</td>
+<td style="text-align: right;">210,044</td>
+<td style="text-align: right;">10.91%</td>
+</tr>
+<tr class="odd">
+<td>Acceso a educación básica</td>
+<td style="text-align: right;">76,816</td>
+<td style="text-align: right;">3.99%</td>
+</tr>
+</tbody>
+</table>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Número de componentes activos</th>
+<th style="text-align: right;">Hogares</th>
+<th style="text-align: right;">Participación dentro de hogares con NBI (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td style="text-align: right;">1,337,508</td>
+<td style="text-align: right;">69.48%</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td style="text-align: right;">462,393</td>
+<td style="text-align: right;">24.02%</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td style="text-align: right;">114,137</td>
+<td style="text-align: right;">5.93%</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td style="text-align: right;">10,588</td>
+<td style="text-align: right;">0.55%</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td style="text-align: right;">515</td>
+<td style="text-align: right;">0.03%</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="conclusiones" class="level2">
+<h2 data-anchor-id="conclusiones">Conclusiones</h2>
+<ol type="1">
+<li>El NBI sigue siendo un fenómeno de gran escala: casi <strong>4 de cada 10 personas</strong> y <strong>más de un tercio de los hogares</strong> aparecen con al menos una necesidad básica insatisfecha.</li>
+<li>La brecha <strong>urbano-rural</strong> es la conclusión más fuerte del archivo. La ruralidad concentra una incidencia de NBI muy superior a la urbana y explica buena parte del nivel nacional.</li>
+<li>El mapa del NBI es muy desigual. <strong>Orellana, Esmeraldas, Manabí, Los Ríos y Morona Santiago</strong> aparecen entre las provincias con mayor incidencia, mientras <strong>Pichincha</strong> queda muy por debajo del promedio.</li>
+<li>La priorización cambia si se mira <strong>incidencia</strong> o <strong>cantidad de hogares</strong>. Provincias pequeñas lideran en tasa, pero <strong>Guayas</strong> y <strong>Manabí</strong> pesan más cuando la pregunta es dónde hay más hogares afectados.</li>
+<li>El componente más frecuente es <strong>acceso a servicios básicos</strong>, lo que ubica el rezago sanitario y de acceso al agua entre los ejes más críticos de la pobreza estructural capturada por el NBI.</li>
+<li>La ruralidad y la composición de carencias van juntas: donde el NBI es más alto, casi siempre se vuelve más dominante la falta de <strong>acceso a servicios básicos</strong> y, en varios casos, también el rezago en <strong>acceso a vivienda</strong>.</li>
+<li>Aunque la mayoría de hogares con NBI tiene una sola carencia, <strong>30.52%</strong> acumula dos o más. Ese grupo merece atención especial porque combina rezagos y, probablemente, enfrenta barreras más persistentes.</li>
+</ol>
+</section>
+<section id="lectura-para-política-pública" class="level2">
+<h2 data-anchor-id="lectura-para-política-pública">Lectura para política pública</h2>
+<section id="acceso-a-servicios-básicos" class="level3">
+<h3 data-anchor-id="acceso-a-servicios-básicos">1. Acceso a servicios básicos</h3>
+<p>Es el núcleo más duro del NBI. Su peso es abrumador en el área rural y domina especialmente en provincias como <strong>Orellana, Bolívar, Morona Santiago, Napo y Pastaza</strong>. La implicación es directa: si la política pública quiere mover rápido el NBI en los territorios más rezagados, la prioridad debe estar en agua segura, saneamiento y conexiones básicas.</p>
+</section>
+<section id="acceso-a-vivienda" class="level3">
+<h3 data-anchor-id="acceso-a-vivienda">2. Acceso a vivienda</h3>
+<p>Este componente gana relevancia en provincias donde la precariedad habitacional es más visible, como <strong>Santa Elena, Loja, Chimborazo y Manabí</strong>. Aquí no basta con ampliar cobertura de servicios; también hay un problema de calidad material de la vivienda. Eso apunta a programas de mejoramiento habitacional y reducción del déficit cualitativo.</p>
+</section>
+<section id="hacinamiento" class="level3">
+<h3 data-anchor-id="hacinamiento">3. Hacinamiento</h3>
+<p>El hacinamiento pesa más en territorios urbanos y costeros, sobre todo en <strong>Santa Elena</strong> y <strong>Guayas</strong>. Eso sugiere que parte del NBI urbano no se explica tanto por ausencia de servicios, sino por presión demográfica sobre la vivienda. La respuesta de política debería combinar vivienda social, mejoramiento de barrios y ampliación de espacio habitable.</p>
+</section>
+<section id="capacidad-económica" class="level3">
+<h3 data-anchor-id="capacidad-económica">4. Capacidad económica</h3>
+<p>Aunque su peso agregado es menor que el de servicios básicos, este componente resalta en <strong>Imbabura, Cañar, Azuay y Bolívar</strong>. Eso sugiere hogares donde la estructura económica y la dependencia interna limitan la capacidad de sostener bienestar. Aquí importan más las políticas de ingreso, empleo y fortalecimiento productivo que las soluciones puramente de infraestructura.</p>
+</section>
+<section id="acceso-a-educación-básica" class="level3">
+<h3 data-anchor-id="acceso-a-educación-básica">5. Acceso a educación básica</h3>
+<p>Es el componente menos frecuente en el agregado, pero no debe minimizarse. Su mayor peso relativo en <strong>Pichincha, Guayas y Santo Domingo de los Tsáchilas</strong> sugiere que, incluso en territorios con menor NBI total, persisten bolsones de exclusión educativa. La implicación es focalizar seguimiento escolar, permanencia y reinserción educativa, sobre todo en contextos urbanos.</p>
+</section>
+<section id="priorización-territorial" class="level3">
+<h3 data-anchor-id="priorización-territorial">6. Priorización territorial</h3>
+<p>El informe sugiere una estrategia de doble entrada:</p>
+<ul>
+<li><strong>Intervención intensiva por incidencia</strong> en provincias como <strong>Orellana, Esmeraldas, Manabí, Los Ríos y Morona Santiago</strong>, donde el NBI está más extendido.</li>
+<li><strong>Intervención de escala por volumen</strong> en <strong>Guayas, Manabí, Los Ríos y Pichincha</strong>, donde se concentra una gran masa de hogares afectados.</li>
+</ul>
+</section>
+<section id="hogares-con-múltiples-carencias" class="level3">
+<h3 data-anchor-id="hogares-con-múltiples-carencias">7. Hogares con múltiples carencias</h3>
+<p>El <strong>30.52%</strong> de los hogares con NBI acumula dos o más privaciones. Ese grupo no debería tratarse con una sola política sectorial, porque combina problemas de infraestructura, vivienda, educación y estructura económica. Es el segmento donde más sentido tiene una intervención integral y territorializada.</p>
+</section>
+</section>
+<section id="nota-metodológica" class="level2">
+<h2 data-anchor-id="nota-metodológica">Nota metodológica</h2>
+<p>Los gráficos en Altair fueron exportados como HTML y se incluyen desde <code>report_assets/</code>. A nivel de hogar se usa <code>P01 == 1</code> como aproximación operativa a la jefatura del hogar. El diccionario en Excel identifica la variable <code>NBI</code>, pero no detalla <code>comp1</code> a <code>comp5</code>; por eso esos componentes se nombran siguiendo el orden metodológico del documento oficial de INEC sobre NBI para el Censo 2022:</p>
+<ol type="1">
+<li><code>comp1</code>: Capacidad económica</li>
+<li><code>comp2</code>: Acceso a educación básica</li>
+<li><code>comp3</code>: Acceso a vivienda</li>
+<li><code>comp4</code>: Acceso a servicios básicos</li>
+<li><code>comp5</code>: Hacinamiento</li>
+</ol>
+<p>Fuentes metodológicas:</p>
+<ul>
+<li>Diccionario de variables: <code>c:\Users\sebas\Downloads\DICCIONARIO_BDD_CANTON (1).xlsx</code></li>
+<li>INEC, <em>Pobreza por Necesidades Básicas Insatisfechas (NBI): Una mirada desde el Censo 2022</em>: <a href="https://www.ecuadorencifras.gob.ec/documentos/web-inec/Censo2022/Documento_NBI_24.09.25.pdf" class="uri">https://www.ecuadorencifras.gob.ec/documentos/web-inec/Censo2022/Documento_NBI_24.09.25.pdf</a></li>
+<li>Geometría provincial para el mapa: <a href="https://raw.githubusercontent.com/Handerica/COVID-19_Ecuador/master/provs-ec.json" class="uri">https://raw.githubusercontent.com/Handerica/COVID-19_Ecuador/master/provs-ec.json</a></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
