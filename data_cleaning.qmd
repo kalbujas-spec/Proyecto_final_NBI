@@ -14,7 +14,7 @@ El objetivo es garantizar que los datos estén consistentes, completos y listos 
 
 ---
 
-## Diagrama del proceso del dataset+
+## Diagrama del proceso del dataset
 
 ```{mermaid}
 %%{init: {
@@ -46,7 +46,7 @@ D4["🚿 Servicios"]:::dim
 D5["👨‍👩‍👧 Hacinamiento"]:::dim
 
 E["🧮 Índice NBI"]:::proceso
-F["📊 Base final<br/>Nivel persona"]:::final
+F["📊 Base a utilizar<br/>Nivel persona"]:::final
 
 A --> B --> C --> D
 
@@ -130,9 +130,11 @@ Indica sobreocupación del hogar.
 Un hogar se clasifica como **pobre por NBI** si presenta al menos una de las cinco privaciones.
 
 Este enfoque permite medir la pobreza desde múltiples dimensiones, superando las limitaciones de indicadores basados únicamente en ingresos.
+
+# EDA inicial
 ```{python}
 #| label: eda-altair-nbi-final-reorder
-#| echo: true
+#| echo: false
 #| warning: false
 #| message: false
 
@@ -153,21 +155,19 @@ alt.data_transformers.disable_max_rows()
 # ================================
 # 1. Cargar datos
 # ================================
-print("===================================")
-print(" 1. CARGA DE DATOS")
-print("===================================")
+
 df = pd.read_parquet("data/df_final.parquet")
 print(f"Dataset cargado con {df.shape[0]:,} filas y {df.shape[1]} columnas.\n")
 
 # ================================
 # 2. Selección de variables
 # ================================
-print("===================================")
-print(" 2. SELECCIÓN DE VARIABLES")
-print("===================================")
-cols = ["ID_PER", "nbi", "comp1", "comp2", "comp3", "comp4", "comp5", "P01", "I01", "AUR"]
+
+print("  SELECCIÓN DE VARIABLES")
+
+cols = [ "nbi", "comp1", "comp2", "comp3", "comp4", "comp5", "P01", "I01", "AUR"]
 df = df[cols]
-print(f"Variables seleccionadas: {cols}\n")
+print(f"Variables seleccionadas para el análisis: {cols}\n")
 
 # Guardamos lista de componentes para limpieza posterior
 comp_cols = ["comp1", "comp2", "comp3", "comp4", "comp5"]
@@ -175,9 +175,9 @@ comp_cols = ["comp1", "comp2", "comp3", "comp4", "comp5"]
 # ================================
 # 3. Valores perdidos ANTES de limpieza
 # ================================
-print("===================================")
-print(" 3. DATOS FALTANTES ANTES DE LIMPIEZA")
-print("===================================")
+
+print("  DATOS FALTANTES ANTES DE LIMPIEZA")
+
 missing_before = df.isnull().sum().to_frame(name="Valores perdidos")
 missing_before["Porcentaje (%)"] = (missing_before["Valores perdidos"] / len(df)) * 100
 display(missing_before)
@@ -199,87 +199,154 @@ missing_chart_before = (
 )
 missing_chart_before.display()
 ```
-```{python}
-# ================================
-# 4. Histograma de NBI
-# ================================
-print("===================================")
-print(" 4. HISTOGRAMA DE NBI")
-print("===================================")
 
-hist_nbi = (
-    alt.Chart(df)
-    .mark_bar(color="#ff7f0e")
-    .encode(
-        alt.X("nbi:Q", bin=alt.Bin(maxbins=30), title="NBI"),
-        alt.Y("count()", title="Frecuencia"),
-        tooltip=["count()"]
-    )
-    .properties(
-        title="Distribución de NBI (ANTES de limpieza)",
-        width=600,
-        height=400
-    )
-)
-hist_nbi.display()
-```
 
 ```{python}
+#| echo: false
 comp_cols = ["comp1", "comp2", "comp3", "comp4", "comp5"]
 
-# ================================
-# 5. LIMPIEZA DE DATOS
-# ================================
-print("===================================")
-print(" 5. LIMPIEZA DE DATOS")
-print("===================================")
 
-print("- Rellenando con 0 los valores faltantes de comp1 a comp5")
+# 5. LIMPIEZA DE DATOS
+
+print("  LIMPIEZA DE DATOS")
+
+
+print("- Se rellena con 0 los valores faltantes de comp1 a comp5, [ues se considera que la persona no tiene esta dimension]")
 df[comp_cols] = df[comp_cols].fillna(0)
 
-print("- Eliminando filas con NBI faltante")
+print("- Eliminando filas con NBI faltante, en este caso no se lo rellena porque corresponde a la ausencia de datos en todos los componentes y no es adecuado imputarlos i dejarlos en la base a analizar")
 df = df.dropna(subset=["nbi"])
 
 print(f"Dimensiones después de limpieza: {df.shape[0]:,} filas y {df.shape[1]} columnas\n")
+print(f"Se elimino el 0.32% de la base original")
 
 
 # ================================
 # 7. Estadísticas descriptivas
 # ================================
-print("===================================")
-print(" 7. ESTADÍSTICAS DESCRIPTIVAS")
-print("===================================")
+print(" ")
+print(" ESTADÍSTICAS DESCRIPTIVAS")
 desc = df.describe().T
 display(desc)
 
 
 
 ```
+```{python}
+#| label: eda-colapsado-por-categoria
+#| echo: false
+#| warning: false
+#| message: false
 
-## Contexto de los datos
+import pandas as pd
+import altair as alt
 
-El archivo original contiene **16,938,986 registros** y **94 columnas**.  
+# =========================================
+# 1. Agregación por categoría (AUR)
+# =========================================
 
-Debido a la magnitud de los datos, para garantizar que el informe sea **estable y renderizable**, el análisis se realizó **sobre las variables de interés**.  
+vars_binarias = ["nbi","comp1","comp2","comp3","comp4","comp5"]
 
-### Transformaciones realizadas
+# Promedios (proporciones) por categoría
+summary = df.groupby("AUR")[vars_binarias].mean().reset_index()
 
-Para simplificar el análisis y facilitar la visualización:
+# =========================================
+# 2. Formato largo para Altair
+# =========================================
 
-- Los datos fueron **resumidos a nivel de provincia**.  
-- Se agregaron métricas por **área rural y urbana**, así como por otras categorías relevantes.  
-- Se consolidaron las variables en tablas **colapsadas** y resúmenes para un análisis más eficiente.
+summary_melt = summary.melt(
+    id_vars="AUR",
+    var_name="variable",
+    value_name="proporcion"
+)
 
-### Tablas resumidas utilizadas 
+# =========================================
+# 3. Etiquetas más interpretables
+# =========================================
 
-- `data_summary/metrics.csv`  
-- `data_summary/aur_summary.csv`  
-- `data_summary/prov_summary.csv`  
-- `data_summary/comp_summary.csv`  
-- `data_summary/comp_count_summary.csv`  
-- `data_summary/aur_comp_summary.csv`  
-- `data_summary/prov_comp_summary.csv`  
-- `data_summary/prov_area_summary.csv`  
-- `data_summary/severity_area_summary.csv`  
-- `data_summary/prov_comp_deviation.csv`  
+labels = {
+    "nbi": "NBI",
+    "comp1": "Capacidad económica",
+    "comp2": "Acceso a educación",
+    "comp3": "Acceso a vivienda",
+    "comp4": "Servicios básicos",
+    "comp5": "Hacinamiento"
+}
 
+summary_melt["variable"] = summary_melt["variable"].map(labels)
+
+# =========================================
+# 4. Gráfico comparativo
+# =========================================
+
+chart = alt.Chart(summary_melt).mark_bar().encode(
+    x=alt.X("AUR:N", title="Área (1=urbana, 2=rural)"),
+    y=alt.Y("proporcion:Q", title="Proporción"),
+    color=alt.Color("AUR:N"),
+    column=alt.Column("variable:N", title="Variables"),
+    tooltip=[
+        alt.Tooltip("variable:N"),
+        alt.Tooltip("AUR:N"),
+        alt.Tooltip("proporcion:Q", format=".2%")
+    ]
+).properties(
+    title="Distribución de NBI y componentes por área",
+    width=120,
+    height=300
+)
+
+chart
+
+```
+# Contexto de los datos
+
+Debido a la magnitud del conjunto de datos original, el análisis se realizó únicamente sobre las **variables de interés**, garantizando que el informe sea **estable**, **renderizable** y **reproducible**.
+
+## Transformaciones realizadas
+
+### Agregación por provincia
+
+Los datos individuales \(i\) fueron resumidos a nivel de provincia \(p\):
+
+$$
+X_{p} = \sum_{i \in p} x_i
+$$
+
+Cuando corresponde, se calcularon promedios:
+
+$$
+\bar{X}_{p} = \frac{1}{N_p} \sum_{i \in p} x_i
+$$
+
+### Desagregación por área (urbana/rural)
+
+Para cada provincia \(p\) y área \(a \in \{\text{urbana}, \text{rural}\}\):
+
+$$
+X_{p,a} = \sum_{i \in (p,a)} x_i
+$$
+
+### Tablas colapsadas
+
+Las variables fueron consolidadas mediante operaciones de colapso:
+
+$$
+\text{collapse}_{\text{provincia}} \left(
+\text{mean}(x),\ \text{sum}(y),\ \text{count}(n)
+\right)
+$$
+
+## Tablas resumidas utilizadas
+
+| Archivo | Descripción |
+|--------|-------------|
+| `data_summary/metrics.csv` | Métricas generales agregadas |
+| `data_summary/aur_summary.csv` | Resumen por área urbana/rural |
+| `data_summary/prov_summary.csv` | Indicadores por provincia |
+| `data_summary/comp_summary.csv` | Resumen por componente |
+| `data_summary/comp_count_summary.csv` | Conteos por componente |
+| `data_summary/aur_comp_summary.csv` | Componentes por área |
+| `data_summary/prov_comp_summary.csv` | Componentes por provincia |
+| `data_summary/prov_area_summary.csv` | Provincia × área |
+| `data_summary/severity_area_summary.csv` | Severidad por área |
+| `data_summary/prov_comp_deviation.csv` | Desviaciones por provincia y componente |
